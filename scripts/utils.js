@@ -42,16 +42,6 @@ export const isRectInViewport = ({ x, y, w, h, pad = 0 }) => {
   return !(right < vLeft || left > vRight || down < vUp || up > vDown);
 };
 
-export const throttle = (fn, wait = 1000 / screen.fps) => {
-  let lastCall = 0;
-  return function(...args) {
-    if(Date.now() - lastCall > wait) {
-      lastCall = Date.now();
-      fn(...args);
-    }
-  };
-};
-
 export function hexToRgba(hex) {
   // remove hash if present
   hex = (hex || '').replace(/^#/, '');
