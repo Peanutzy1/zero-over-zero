@@ -20,11 +20,11 @@ export function pointTreeSetup() {
   // "ah yes jss (Javascript Style Sheets)"
   const pointTreeButtonStyle = {
     type: 'support',
-    w: 350,
+    w: 400,
     h: 200,
     fill: '#c0c0c0',
     stroke: '#ffffff',
-    font: '12px noto sans',
+    font: '14px noto sans',
     fontFill: '#ffffff',
     fontStroke: '#000000',
   };
@@ -47,8 +47,8 @@ export function pointTreeSetup() {
   const p2 = new Button({
     id: 'p2',
     treeID: 'point',
-    x: -200,
-    y: -200,
+    x: -400,
+    y: -400,
     description: 'template upgrade desc',
     childrenIDs: [],
     action: () => { console.log('p2 has been pressed'); },
@@ -61,7 +61,7 @@ export function pointTreeSetup() {
     id: 'p3',
     treeID: 'point',
     x: 0,
-    y: -400,
+    y: -800,
     description: 'template upgrade desc',
     childrenID: [],
     action: () => { console.log('p3 has been pressed'); },

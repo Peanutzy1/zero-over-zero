@@ -1,6 +1,6 @@
 // this script starts mouse logics like moving and scrolling
 'use strict';
-import { world, screen, canvasElement } from '../vars.js';
+import { world, screen } from '../vars.js';
 import { screenToWorld, buttonScanner } from '../utils.js';
 export function mouseInit() {
   let leftMouseDown = false;
@@ -58,13 +58,13 @@ export function mouseInit() {
     e.preventDefault();
   });
 
-  canvasElement.addEventListener('wheel', e => {
+  world.canvas.addEventListener('wheel', e => {
     e.preventDefault();
     const zoomFactor = 1.1;
     if (e.deltaY < 0) { world.scale *= zoomFactor; } else { world.scale /= zoomFactor; }
     world.scale = Math.min(Math.max(world.scale, 0.1), 100);
     buttonScanner();            
-  }, { passive: false });
+  });
 }
 
 function buttonHoverController(buttons, mouseDown, mouseUp) {

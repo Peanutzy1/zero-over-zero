@@ -2,7 +2,7 @@
 // "just dump every function in here and it would not be nonsense" - peanut
 'use strict';
 
-import { world, screen, trees, ctx } from './vars.js';
+import { world, screen, trees } from './vars.js';
 
 // turns screen -> world coords (zoom aware)
 // no use case yet
@@ -106,7 +106,7 @@ export function wrapText(text, maxWidth) {
   for (let i = 0; i < words.length; i++) {
     const testLine = `${line}${words[i]} `; // current line with the next word 
     // and a space at the end of that word
-    const metrics = ctx.measureText(testLine); // measures the width of the test line
+    const metrics = world.ctx.measureText(testLine); // measures the width of the test line
     // checks if testline is too long and if were not on the first word
     // cuz if we dont allow words like supercalifragilisticexpialidocious to exist
     // it would run into infinite loop
@@ -123,13 +123,13 @@ export function wrapText(text, maxWidth) {
 
 // draws the wrapped text, spacing is height (px), and stroke param means draw stroke?
 // used in Button.drawDescription() to draw the description
-export function drawWrappedText({ text, maxWidth, x, y, spacing, stroke }) {
-  const metrics = ctx.measureText('"Hi guys MEEE in code gee im quacking already!?" @ peanut');
+export function drawWrappedText({ text, maxWidth, x, y, spacing, stroke, ctx }) {
+  const metrics = ctx.measureText("'MgH@q*- yes its for accuracy' - peanut");
   const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
   let textY = y;
   const lines = wrapText(text, maxWidth);
   lines.forEach(line => { 
-    ctx.fillText(line, x, textY);
+    world.ctx.fillText(line, x, textY);
     stroke && ctx.strokeText(line, x, textY);
     textY += actualHeight + spacing;
   });

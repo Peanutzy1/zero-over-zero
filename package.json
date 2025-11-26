@@ -1,0 +1,24 @@
+{
+  "name": "game-project",
+  "version": "1.0.0",
+  "description": "i am trying to replicate the upgrade tree system from some roblox games",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Peanutzy1/game-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Peanutzy1/game-project/issues"
+  },
+  "homepage": "https://github.com/Peanutzy1/game-project#readme"
+}

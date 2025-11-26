@@ -2,17 +2,22 @@
 // "BORING" - peanut
 
 'use strict';
-import { canvasElement, keyStates } from '../vars.js';
+import { world, screen, keyStates } from '../vars.js';
 
 function resizeCanvas() {
   const width = window.innerWidth;
   const height = window.innerHeight;
   
   // resizes canvas and also style so it doesnt scale canvas
-  canvasElement.style.width = `${width}px`;
-  canvasElement.style.height = `${height}px`;
-  canvasElement.width = width;
-  canvasElement.height = height;
+  // "i swear i will change this" -peanut
+  world.canvas.style.width = `${width}px`;
+  world.canvas.style.height = `${height}px`;
+  world.canvas.width = width;
+  world.canvas.height = height;
+  screen.canvas.style.width = `${width}px`;
+  screen.canvas.style.height = `${height}px`;
+  screen.canvas.width = width;
+  screen.canvas.height = height; 
 }
 
 export function resizeInit() {

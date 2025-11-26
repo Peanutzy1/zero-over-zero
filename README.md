@@ -1,6 +1,8 @@
 # Welcome to my button (maybe engine idk)
-i am trying to replicate the upgrade trees from some roblox games
+i am trying to replicate the upgrade trees system from some roblox games
+
 its canvas based js
+
 here are my insparation: (both roblox games)
 
 - [The difficulty upgrade tree: regrown](https://www.roblox.com/games/15913854716/The-Difficulty-Upgrade-Tree-Regrown)

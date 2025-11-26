@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>a game</title>
+    <title>peanutzy's untitled upgrade tree</title>
     <style>
       html, body { 
         width: 100%;
         height: 100%;
         margin: 0px;
         overflow: hidden;
-       };
+      };
+      
+      #worldCanvas {
+        position: absolute; top: 0; left: 0;
+      }
+
+      #uiCanvas {
+        position: absolute; top: 0; left: 0;
+      }
     </style>
   </head>
   <body>
-    <canvas id = "gameCanvas"></canvas>
+    <canvas id = "worldCanvas"></canvas>
+    <canvas id = "uiCanvas"></canvas>
     <script src="./scripts/main.js" type = "module"></script>
   </body>
 </html>
