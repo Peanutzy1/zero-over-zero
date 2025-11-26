@@ -1,50 +1,60 @@
-// this file is for the button class
+// this file is for the button clas\
 // "who would've thought button behavior is complicated af" - peanut
 
 'use strict';
-import { ctx, world, screen } from '../vars.js';
-import { hexToRgba, isRectInViewport, isPointInRect } from '../utils.js';
+import { ctx, world, screen, trees } from '../vars.js';
+import { hexToRgba, isRectInViewport, isPointInRect, drawWrappedText } from '../utils.js';
 
 export class Button {
   constructor({
     id = '', description = '', x = 0, y = 0, // coords is centered
-    action = () => { console.log(`${this.id} did action`); }, // action for onclick() method
+    action = () => {}, // action for onclick() method
     activateReq = () => { return true; }, // activation requirements, returns boolean
     unlockReq = () => { return true; }, // visibility requirements, returns boolean
     //  "for the suprise element xdd" - peanut
     childrenIDs = [], // IDs of buttons attempting unlocking after activation
-    tree
+    treeID, 
+    how2style 
+    // (wip) the style guide, will be a functionable class later
+    // type can be 'support' or 'override' which either adds to the button or rewrite the draw()
+    // " r/unixp*** but its buttons" -peanut
   }) {
     // self explanatory
-    this.id = id;
+    this.id = id; 
     this.description = description;
-    this.tree = tree;
-    this.x = x;
+    this.treeID = treeID;
+    this.x = x; 
     this.y = y;
 
-    // the button inherits these traits from the tree
-    this.w = this.tree?.buttonWidth ?? 160;
-    this.h = this.tree?.buttonHeight ?? 100;
-    this.fill = this.tree?.buttonFill ?? '#0080ff';
-    this.stroke = this.tree?.buttonStroke ?? '#8000ff';
+    this.style = how2style ;
+
+    // the button inherits these traits from the style
+    this.w = this.style?.w ?? 160; this.h = this.style?.h ?? 100;
+    this.fill = this.style?.fill ?? '#0080ff';
+    this.stroke = this.style?.stroke ?? '#8000ff';
+    this.font = this.style?.font ?? 'bold 14px "Comic Sans MS", cursive, monospace';
+    this.fontFill = this.style?.fontFill ?? '#ffffff'; 
+    this.fontStroke = this.style?.fontStroke ?? '#000000';
 
     // current states of the button
     this.pressed = false;
     this.hovered = false;
     this.unlocked = unlockReq();
     this.activationCount = 0; // activation count instead of activated because its more versatile
-
     this.activateReq = activateReq;
     this.unlockReq = unlockReq;
-    this.action = action;
+    this.action = action || (() => { console.log(`${this.id} did action`); });
 
     this.childrenIDs = childrenIDs;
 
     // this is r, g, b, a values (stored as an object) for stoke color and fill color
     this.rgbaFill = hexToRgba(this.fill);
     this.rgbaStroke = hexToRgba(this.stroke);
-    this.tree.buttons.set(this.id, this); // button auto adds itself on the tree's buttons Map
+    // button auto adds itself on the tree's buttons Map
+    this.tree = trees.get(this.treeID);
+    this.tree.buttons.set(this.id, this);
   }
+
   // "Players would complain if the game's a blank canvas with invisible buttons lol" - peanut
   draw() {
     ctx.beginPath();
@@ -83,10 +93,25 @@ export class Button {
     // you can see the button's coords are centered 
     ctx.strokeRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
     ctx.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
-    ctx.beginPath();
+    this.drawDescription();
   }
 
-  // ok this thing works
+  // "couldve intergrated this to draw()" - peanut
+  drawDescription() {
+    ctx.font = this.font;
+    ctx.fillStyle = this.fontFill;
+    ctx.strokeStyle = this.fontStroke;
+    ctx.textAlign = 'center';
+    drawWrappedText({
+      text: this.description,
+      x: this.x,
+      y: this.y,
+      maxWidth: this.w - 20,
+      spacing: 0
+    });
+  }
+
+  // "1 comment per everything" - p e a n u t
   isInViewport() {
     return isRectInViewport({ x: this.x, y: this.y, w: this.w, h: this.h, pad: 50 });
   }
@@ -113,14 +138,11 @@ export class Button {
   // if their unlockReq() returns true
   // will be visible if theirisInViewport() also returns true 
   unlockController() {
-    for (const i in this.childrenIDs) {
-      const button = this.tree.buttons.get(this.childrenIDs[i]);
-      if(button) {
-        button.unlocked = button.unlockReq();
-        if(button.isInViewport()) {
-          screen.viewableButtons.add(button);
-        }
-      }
-    }
+    this.childrenIDs.forEach(id => {
+      const btn = this.tree.buttons.get(id);
+      if(!btn) { return; }
+      btn.unlocked = btn.unlockReq();
+      btn.isInViewport() && screen.viewableButtons.add(btn);
+    });
   }
 } // "the {} slide of doom, never nesters hates this" - peanut

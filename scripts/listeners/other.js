@@ -2,7 +2,7 @@
 // "BORING" - peanut
 
 'use strict';
-import { canvasElement } from '../vars.js';
+import { canvasElement, keyStates } from '../vars.js';
 
 function resizeCanvas() {
   const width = window.innerWidth;
@@ -19,5 +19,11 @@ export function resizeInit() {
   resizeCanvas();
   addEventListener('resize', () => {
     resizeCanvas();
+  });
+}
+
+export function focusInit() {
+  window.addEventListener('blur', () => {
+    for (const key in keyStates) { keyStates[key] = false; }
   });
 }

@@ -61,10 +61,8 @@ export function mouseInit() {
   canvasElement.addEventListener('wheel', e => {
     e.preventDefault();
     const zoomFactor = 1.1;
-    if (e.deltaY < 0) { 
-      world.scale *= zoomFactor; 
-      
-    } else { world.scale /= zoomFactor; }
+    if (e.deltaY < 0) { world.scale *= zoomFactor; } else { world.scale /= zoomFactor; }
+    world.scale = Math.min(Math.max(world.scale, 0.1), 100);
     buttonScanner();            
   }, { passive: false });
 }

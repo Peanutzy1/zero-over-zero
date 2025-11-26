@@ -2,7 +2,7 @@
 // "just dump every function in here and it would not be nonsense" - peanut
 'use strict';
 
-import { world, screen, trees } from './vars.js';
+import { world, screen, trees, ctx } from './vars.js';
 
 // turns screen -> world coords (zoom aware)
 // no use case yet
@@ -56,7 +56,7 @@ export function isRectInViewport({ x, y, w, h, pad = 0 }) {
 
 // hex -> {r, g, b a}
 // use case is in button.js Button class's constructor
-// "please do not use 'rgba()' to make a button" - peanut
+// "please do not use 'rgba()' when making a button" - peanut
 export function hexToRgba(hex) {
   // remove hash if present
   hex = (hex || '').replace(/^#/, ''); // "i hate RegExps" - Peanut
@@ -77,7 +77,7 @@ export function scaleRGB(r, g, b, scale) {
   return { r: r * scale, g: g * scale, b: b * scale };
 }
 
-// "my greatest invention" - Peanut
+// "my greatest invention" - Peanutzy
 // scans all buttons, return all buttons inside viewport.
 // use case is in keyboard.js, scans for buttons if movement key (wasd) is pressed
 export function buttonScanner() {
@@ -97,8 +97,8 @@ export function buttonScanner() {
 }
 
 // sorry guys if the docs are a bit too extensive because i asked claude to generate this
-// use case (future) is in making descriptions for buttons (wip)
-export function wrapText(ctx, text, maxWidth) {
+// used in drawWrappedText() to create wrapped text
+export function wrapText(text, maxWidth) {
   const words = text.split(' '); // makes an array, then seperates each word by spaces
   const lines = []; // the output, will be individual lines fitting the maxWidth
   let line = ''; // current line
@@ -119,4 +119,17 @@ export function wrapText(ctx, text, maxWidth) {
   }
   lines.push(line.trim()); // pushes the last fitting line
   return lines;
+}
+
+// draws the wrapped text, spacing is height (px) btw
+// used in Button.drawDescription() to draw the description
+export function drawWrappedText({ text, maxWidth, x, y, spacing }) {
+  const metrics = ctx.measureText('"Hi guys MEEE in code gee im quacking already!?" @ peanut');
+  const actualHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+  let textY = y;
+  const lines = wrapText(text, maxWidth);
+  lines.forEach(line => { 
+    ctx.fillText(line, x, textY); 
+    textY += actualHeight + spacing;
+  });
 }

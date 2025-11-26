@@ -5,15 +5,10 @@
 import { trees } from '../vars.js';
 
 export class Tree {
-  constructor({ id, buttonFill, buttonStroke, buttonWidth, buttonHeight }) {
+  constructor({ id }) {
     this.id = id; // tree's id 
     this.buttons = new Map();
     this.links = new Map();
-
-    this.buttonFill = buttonFill; // defines the fill color of the button in tree
-    this.buttonStroke = buttonStroke; // ... stroke color
-    this.buttonWidth = buttonWidth; // ... button width
-    this.buttonHeight = buttonHeight; // ... button height
 
     trees.set(this.id, this); // auto add to trees, a map in ../vars.js
   }

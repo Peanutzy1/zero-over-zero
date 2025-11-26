@@ -4,7 +4,7 @@
 'use strict';
 
 import { mouseInit } from './listeners/mouse.js';
-import { resizeInit } from './listeners/other.js';
+import { focusInit, resizeInit } from './listeners/other.js';
 import { keyboardController, keyboardInit } from './listeners/keyboard.js';
 import { draw } from './render.js';
 import { pointTreeSetup } from './setup/pointTree.js';
@@ -14,6 +14,7 @@ function start() {
   pointTreeSetup();
   mouseInit();
   resizeInit();
+  focusInit();
   keyboardInit();
   requestAnimationFrame(gameLoop);
 }

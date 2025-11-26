@@ -21,16 +21,16 @@ export function keyboardInit() {
 // reads screen.keystates every frame and then apply action, 
 // is in ../main.js inside of gameloop()
 export function keyboardController() {
-  let movementSpeed = 3;
+  let movementSpeed = 8;
   if(keyStates[' ']) { movementSpeed *= 2; } // speedy mode via space
 
   // smooths out movement speed
   const actualSpeed = movementSpeed / world.scale * screen.deltaTime * 60;
 
-  if(keyStates['a']) { world.x += actualSpeed; }
-  if(keyStates['d']) { world.x -= actualSpeed; }
-  if(keyStates['w']) { world.y += actualSpeed; }
-  if(keyStates['s']) { world.y -= actualSpeed; }
+  if(keyStates['a']) { world.x -= actualSpeed; }
+  if(keyStates['d']) { world.x += actualSpeed; }
+  if(keyStates['w']) { world.y -= actualSpeed; }
+  if(keyStates['s']) { world.y += actualSpeed; }
 
   // activates buttonScanner() for when viewport moves
   // oh and buttonScanner() scans for buttons inside viewport btw - peanut
