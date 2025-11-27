@@ -2,7 +2,7 @@
 // "just dump every function in here and it would not be nonsense" - peanut
 'use strict';
 
-import { world, screen, trees } from './vars.js';
+import { world, trees } from './vars.js';
 
 // turns screen -> world coords (zoom aware)
 // no use case yet
@@ -34,14 +34,14 @@ export function makeRectBounds({ x, y, w, h, pad = 0 }) {
 }
 
 // point inside rect?; first 2 params are point's coords, rest is the rect's 
-// use case is in ./gameplay/button.js -> Button.isUnderMouse() method
+// use case is in ./gameplay/button.js -> TreeButton.isUnderMouse() method
 export function isPointInRect({ px, py, x, y, w, h }) {
   const { left, right, up, down } = makeRectBounds({ x, y, w, h });
   return px >= left && px <= right && py >= up && py <= down;
 }
 
 // rect in viewport? same params as makeRectBounds()
-// use case is in ./gameplay/button.js on the isInViewport() method
+// use case is in ./gameplay/button.js -> TreeButton.isInViewport() method
 export function isRectInViewport({ x, y, w, h, pad = 0 }) {
   const { left, right, up, down } = makeRectBounds({ x, y, w, h, pad });
   const { left: vLeft, right: vRight, up: vUp, down: vDown } = makeRectBounds({
@@ -56,7 +56,7 @@ export function isRectInViewport({ x, y, w, h, pad = 0 }) {
 
 // hex -> {r, g, b a}
 // use case is in button.js Button class's constructor
-// "please do not use 'rgba()' when making a button" - peanut
+// "please do not use 'rgba()' when making a treebutton" - peanut
 export function hexToRgba(hex) {
   // remove hash if present
   hex = (hex || '').replace(/^#/, ''); // "i hate RegExps" - Peanut
@@ -77,6 +77,9 @@ export function scaleRGB(r, g, b, scale) {
   return { r: r * scale, g: g * scale, b: b * scale };
 }
 
+export function scaleRgbaToString({ r, g, b, a }, scale) {
+  return `rgba(${r * scale}, ${g * scale}, ${b * scale}, ${a})`;
+}
 // "my greatest invention" - Peanutzy
 // scans all buttons, return all buttons inside viewport.
 // use case is in keyboard.js, scans for buttons if movement key (wasd) is pressed
@@ -93,7 +96,7 @@ export function buttonScanner() {
       }
     });
   });
-  screen.viewableButtons = viewableButtons;
+  world.viewableButtons = viewableButtons;
 }
 
 // sorry guys if the docs are a bit too extensive because i asked claude to generate this

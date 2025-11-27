@@ -4,12 +4,13 @@
 
 export const screen = { 
   mouse: { x: 0, y: 0 },
+  leftMouseDown: false,
   fps: 30,
   viewableButtons: new Set(), // buttons inside viewport / canvas
   deltaTime: 0,
   canvas: document.getElementById('uiCanvas'),
-  ctx: screen.canvas.getContext('2d'),
 };
+screen.ctx = screen.canvas.getContext('2d');
 
 export const world = {
   mouse: { x: 0, y: 0 },
@@ -17,9 +18,12 @@ export const world = {
   scale: 0.8, // scale closer to 0 = bigger fov
   background: 0,
   canvas: document.getElementById('worldCanvas'),
-  ctx: world.canvas.getContext('2d'),
+  viewableButtons: new Set(),
 };
+world.ctx = world.canvas.getContext('2d');
 
 export const trees = new Map();
 
 export const keyStates = {}; // stores key is pressed or not
+
+export const mouseStates = { leftDown: false };

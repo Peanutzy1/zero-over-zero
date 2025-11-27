@@ -33,6 +33,6 @@ here are my insparation: (both roblox games)
 ## notes 
 **expect chaos im 14 while writing this and this is my first project**
 
-- it's made with some help from ai, sorry..
+ 
 
 - go to [info.md](./docs/general-info.md)

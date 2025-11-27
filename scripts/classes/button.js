@@ -3,9 +3,11 @@
 
 'use strict';
 import { world, screen, trees } from '../vars.js';
-import { hexToRgba, isRectInViewport, isPointInRect, drawWrappedText } from '../utils.js';
+import { 
+  hexToRgba, scaleRgbaToString, isRectInViewport, isPointInRect, drawWrappedText 
+} from '../utils.js';
 
-export class Button {
+export class TreeButton {
   constructor({
     id = '', description = '', x = 0, y = 0, // coords is centered
     action = () => {}, // action for onclick() method
@@ -29,12 +31,12 @@ export class Button {
     this.style = how2style ;
 
     // the button inherits these traits from the style
-    this.w = this.style?.w ?? 160; this.h = this.style?.h ?? 100;
-    this.fill = this.style?.fill ?? '#0080ff';
-    this.stroke = this.style?.stroke ?? '#8000ff';
-    this.font = this.style?.font ?? 'bold 14px "Comic Sans MS", cursive, monospace';
-    this.fontFill = this.style?.fontFill ?? '#ffffff'; 
-    this.fontStroke = this.style?.fontStroke ?? '#000000';
+    this.w = this.style.w ?? 160; this.h = this.style.h ?? 100;
+    this.fill = this.style.fill ?? '#0080ff';
+    this.stroke = this.style.stroke ?? '#8000ff';
+    this.font = this.style.font ?? 'bold 14px "Comic Sans MS", cursive, monospace';
+    this.fontFill = this.style.fontFill ?? '#ffffff'; 
+    this.fontStroke = this.style.fontStroke ?? '#000000';
 
     // current states of the button
     this.pressed = false;
@@ -43,7 +45,7 @@ export class Button {
     this.activationCount = 0; // activation count instead of activated because its more versatile
     this.activateReq = activateReq;
     this.unlockReq = unlockReq;
-    this.action = action || (() => { console.log(`${this.id} did action`); });
+    this.action = action ?? (() => { console.log(`${this.id} did action`); });
 
     this.childrenIDs = childrenIDs;
 
@@ -57,36 +59,20 @@ export class Button {
 
   // "Players would complain if the game's a blank canvas with invisible buttons lol" - peanut
   draw() {
-    if(this.style.type === 'support') {
+    if(!this.style.iLikeToRewritehow2draw) {
       world.ctx.beginPath();
       // so this fill darkens based on the states
       // like darker when hovered and EVEN DARKER when its pressed on
-      if(this.pressed) {
-        world.ctx.fillStyle = `rgba(
-        ${this.rgbaFill.r * 0.5}, 
-        ${this.rgbaFill.g * 0.5}, 
-        ${this.rgbaFill.b * 0.5},
-        ${this.rgbaFill.a}
-        )`;
-      } else if(this.hovered) {
-        world.ctx.fillStyle = `rgba(
-        ${this.rgbaFill.r * 0.75}, 
-        ${this.rgbaFill.g * 0.75}, 
-        ${this.rgbaFill.b * 0.75},
-        ${this.rgbaFill.a}
-        )`;
-      } else {
-        world.ctx.fillStyle = this.fill;
+      world.ctx.fillStyle = this.fill;
+      if(this.hovered) {
+        world.ctx.fillStyle = scaleRgbaToString(this.rgbaFill, 0.75);
       }
-
+      if(this.pressed) {
+        world.ctx.fillStyle = scaleRgbaToString(this.rgbaFill, 0.5);
+      } 
       // the stroke darkens when its not upgraded yet, and shines the true color when it does
       if(this.activationCount === 0) {
-        world.ctx.strokeStyle = `rgba(
-        ${this.rgbaStroke.r * 0.25}, 
-        ${this.rgbaStroke.g * 0.25}, 
-        ${this.rgbaStroke.b * 0.25},
-        ${this.rgbaStroke.a}
-        )`;
+        world.ctx.strokeStyle = scaleRgbaToString(this.rgbaStroke, 0.25);
       } else {
         world.ctx.strokeStyle = this.stroke;
       }
@@ -96,7 +82,6 @@ export class Button {
       world.ctx.fillRect(this.x - this.w / 2, this.y - this.h / 2, this.w, this.h);
       this.drawDescription();
     }
-    
     this.style.draw?.();
   }
 
@@ -106,6 +91,7 @@ export class Button {
     world.ctx.fillStyle = this.fontFill;
     world.ctx.strokeStyle = this.fontStroke;
     world.ctx.textAlign = 'center';
+    world.ctx.lineWidth = 1;
     drawWrappedText({
       text: this.description,
       x: this.x,
@@ -148,7 +134,33 @@ export class Button {
       const btn = this.tree.buttons.get(id);
       if(!btn) { return; }
       btn.unlocked = btn.unlockReq();
-      btn.isInViewport() && screen.viewableButtons.add(btn);
+      btn.isInViewport() && world.viewableButtons.add(btn);
     });
   }
 } // "the {} slide of doom, never nesters hates this" - peanut
+
+export class UIButton {
+  constructor({ x, y, action, viewReq, style }) {
+    this.x = x;
+    this.y = y;
+    this.action = action; // function
+    this.style = style;
+    this.hovered = false;
+    this.pressed = false;
+    this.activated = false;
+
+    this.viewReq = viewReq;
+    this.viewable = viewReq();
+  }
+
+  draw() {
+    this.style.draw();
+  }
+
+  isUnderMouse() {
+    return isPointInRect({
+      px: screen.mouse.x, py: screen.mouse.y,
+      x: this.x, y: this.y, w: this.style.w, h: this.style.h
+    });
+  }
+}

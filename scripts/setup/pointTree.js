@@ -4,7 +4,7 @@
 'use strict';
 import { trees } from '../vars.js';
 import { Tree } from '../classes/tree.js';
-import { Button } from '../classes/button.js';
+import { TreeButton } from '../classes/button.js';
 
 // #region Point tree
 export function pointTreeSetup() {
@@ -19,19 +19,18 @@ export function pointTreeSetup() {
   // follow this format when you are making a button style
   // "ah yes jss (Javascript Style Sheets)"
   const pointTreeButtonStyle = {
-    type: 'support',
     w: 400,
     h: 200,
     fill: '#c0c0c0',
     stroke: '#ffffff',
-    font: '14px noto sans',
+    font: 'bold 20px noto sans',
     fontFill: '#ffffff',
     fontStroke: '#000000',
   };
 
   const _pointTree = trees.get('pointTree');
 
-  const p1 = new Button({
+  const p1 = new TreeButton({
     id: 'p1',
     treeID: 'point',
     description: 'starter of all things, 1/s passive point generation',
@@ -44,7 +43,7 @@ export function pointTreeSetup() {
     how2style: pointTreeButtonStyle
   });
 
-  const p2 = new Button({
+  const p2 = new TreeButton({
     id: 'p2',
     treeID: 'point',
     x: -400,
@@ -57,7 +56,7 @@ export function pointTreeSetup() {
     how2style: pointTreeButtonStyle
   });
 
-  const p3 = new Button({
+  const p3 = new TreeButton({
     id: 'p3',
     treeID: 'point',
     x: 0,
