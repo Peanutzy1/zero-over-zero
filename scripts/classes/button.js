@@ -18,7 +18,7 @@ export class TreeButton {
     treeID, 
     how2style 
     // (wip) the style guide, will be a functionable class later
-    // type can be 'support' or 'override' which either adds to the button or rewrite the draw()
+    //  the property "iLikeToRewritehow2draw" is self explanatory.
     // " r/unixp*** but its buttons" -peanut
   }) {
     // self explanatory
