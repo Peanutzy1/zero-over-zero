@@ -1,7 +1,6 @@
 // this file contains.. variables, do you expect it to contain magic?
 // without these your game would have dementia trying to remember
 'use strict';
-
 export const screen = { 
   mouse: { x: 0, y: 0 },
   leftMouseDown: false,
@@ -27,3 +26,5 @@ export const trees = new Map();
 export const keyStates = {}; // stores key is pressed or not
 
 export const mouseStates = { leftDown: false };
+
+export const currencies = new Map();

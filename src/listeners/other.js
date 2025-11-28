@@ -7,17 +7,23 @@ import { world, screen, keyStates } from '../vars.js';
 function resizeCanvas() {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  
-  // resizes canvas and also style so it doesnt scale canvas
-  // "i swear i will change this" -peanut
+
+  const dpr = window.devicePixelRatio || 1;
+
+  // WORLD
   world.canvas.style.width = `${width}px`;
   world.canvas.style.height = `${height}px`;
-  world.canvas.width = width;
-  world.canvas.height = height;
+  world.canvas.width = width * dpr;
+  world.canvas.height = height * dpr;
+  world.ctx.setTransform(dpr, 0, 0, dpr, 0, 0); 
+  // this resets scaling every resize so camera math works cleanly
+
+  // SCREEN/UI
   screen.canvas.style.width = `${width}px`;
   screen.canvas.style.height = `${height}px`;
-  screen.canvas.width = width;
-  screen.canvas.height = height; 
+  screen.canvas.width = width * dpr;
+  screen.canvas.height = height * dpr;
+  screen.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 export function resizeInit() {

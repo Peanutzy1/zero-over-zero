@@ -31,12 +31,8 @@ export class TreeButton {
     this.style = how2style ;
 
     // the button inherits these traits from the style
-    this.w = this.style.w ?? 160; this.h = this.style.h ?? 100;
-    this.fill = this.style.fill ?? '#0080ff';
-    this.stroke = this.style.stroke ?? '#8000ff';
-    this.font = this.style.font ?? 'bold 14px "Comic Sans MS", cursive, monospace';
-    this.fontFill = this.style.fontFill ?? '#ffffff'; 
-    this.fontStroke = this.style.fontStroke ?? '#000000';
+    this.w = this.style.w ?? 160; 
+    this.h = this.style.h ?? 100;
 
     // current states of the button
     this.pressed = false;
@@ -50,11 +46,27 @@ export class TreeButton {
     this.childrenIDs = childrenIDs;
 
     // this is r, g, b, a values (stored as an object) for stoke color and fill color
-    this.rgbaFill = hexToRgba(this.fill);
-    this.rgbaStroke = hexToRgba(this.stroke);
+    this.rgbaFill = hexToRgba(this.style.fill);
+    this.rgbaStroke = hexToRgba(this.style.stroke);
     // button auto adds itself on the tree's buttons Map
     this.tree = trees.get(this.treeID);
     this.tree.buttons.set(this.id, this);
+
+    const originalDraw = this.draw.bind(this);
+    // modder can rewrite draw() with the flag
+    // or not and just draw more
+    if(this.style.draw) {
+      if(this.style.iLikeToRewritehow2draw) {
+        // chaotic path
+        this.draw = () => { this.style.draw(this); };
+      } else {
+        // support path
+        this.draw = () => {
+          originalDraw();
+          this.style.draw();
+        };
+      }
+    }
   }
 
   // "Players would complain if the game's a blank canvas with invisible buttons lol" - peanut
@@ -63,7 +75,7 @@ export class TreeButton {
       world.ctx.beginPath();
       // so this fill darkens based on the states
       // like darker when hovered and EVEN DARKER when its pressed on
-      world.ctx.fillStyle = this.fill;
+      world.ctx.fillStyle = this.style.fill;
       if(this.hovered) {
         world.ctx.fillStyle = scaleRgbaToString(this.rgbaFill, 0.75);
       }
@@ -74,7 +86,7 @@ export class TreeButton {
       if(this.activationCount === 0) {
         world.ctx.strokeStyle = scaleRgbaToString(this.rgbaStroke, 0.25);
       } else {
-        world.ctx.strokeStyle = this.stroke;
+        world.ctx.strokeStyle = this.style.stroke;
       }
       world.ctx.lineWidth = 15;
       // you can see the button's coords are centered 
@@ -87,9 +99,9 @@ export class TreeButton {
 
   // "couldve intergrated this to draw()" - peanut
   drawDescription() {
-    world.ctx.font = this.font;
-    world.ctx.fillStyle = this.fontFill;
-    world.ctx.strokeStyle = this.fontStroke;
+    world.ctx.font = this.style.font;
+    world.ctx.fillStyle = this.style.fontFill;
+    world.ctx.strokeStyle = this.style.fontStroke;
     world.ctx.textAlign = 'center';
     world.ctx.lineWidth = 1;
     drawWrappedText({

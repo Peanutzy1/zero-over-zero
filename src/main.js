@@ -9,6 +9,7 @@ import { keyboardController, keyboardInit } from './listeners/keyboard.js';
 import { draw } from './render.js';
 import { pointTreeSetup } from './setup/pointTree.js';
 import { screen } from './vars.js';
+import { updateCurrencies } from './classes/currency.js';
 
 // starts everything
 // "i love it when it has lowest amount of lines but technically runs the most" - peanut 
@@ -26,6 +27,7 @@ function start() {
 let lastTime = 0;
 function gameLoop(currentTime) {
   keyboardController();
+  updateCurrencies();
   screen.deltaTime = (currentTime - lastTime) / 1000;
   lastTime = currentTime;
   draw();

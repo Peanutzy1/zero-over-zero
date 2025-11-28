@@ -5,6 +5,7 @@
 import { trees } from '../vars.js';
 import { Tree } from '../classes/tree.js';
 import { TreeButton } from '../classes/button.js';
+import { Currency } from '../classes/currency.js';
 
 // #region Point tree
 export function pointTreeSetup() {
@@ -26,9 +27,10 @@ export function pointTreeSetup() {
     font: 'bold 20px noto sans',
     fontFill: '#ffffff',
     fontStroke: '#000000',
+    draw: (_btn) => {}
   };
 
-  const _pointTree = trees.get('pointTree');
+  const point = new Currency('point');
 
   const p1 = new TreeButton({
     id: 'p1',
@@ -37,7 +39,7 @@ export function pointTreeSetup() {
     x: 0,
     y: 0,
     childrenIDs: ['p2', 'p3'],
-    action: () => { console.log('p1 has been pressed'); },
+    action: () => { point.baseGen = 1; },
     unlockReq: () => { return true; },
     activateReq: () => { return true; },
     how2style: pointTreeButtonStyle
