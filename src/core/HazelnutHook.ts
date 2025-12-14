@@ -11,8 +11,8 @@ export class HazelnutHook<C extends ContainerMap> {
     this.culls.push(fn);
   }
 
-  run(InitalIds: string[], manager: MacademiaManager<C>) {
-    let ids = InitalIds;
+  run(initalIDs: string[], manager: MacademiaManager<C>) {
+    let ids = initalIDs;
     for (const cull of this.culls) {
       ids = cull(ids, manager);
     }
@@ -25,7 +25,7 @@ export class HazelnutHook<C extends ContainerMap> {
     }
   }
 
-  getActiveIds() {
+  getActiveIDs() {
     return this.activeIDs;
   }
 }

@@ -1,8 +1,4 @@
 # info desk
 
-## future info files
-
-- the TreeButton class
-- the style object
-- the setup tutorial
-- overview
+## info files
+[very core stuff](./core.md)

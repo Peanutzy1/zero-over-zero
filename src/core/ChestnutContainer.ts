@@ -8,7 +8,7 @@ export class ChestnutContainer<T> {
     this.data = new Map<string, T>();
   }
 
-  add(id: ContainerID, component: T) {
+  set(id: ContainerID, component: T) {
     this.data.set(id, component);
   }
 
@@ -16,7 +16,7 @@ export class ChestnutContainer<T> {
     return this.data.get(id);
   }
 
-  del(id: ContainerID) {
+  delete(id: ContainerID) {
     this.data.delete(id);
   }
 }
