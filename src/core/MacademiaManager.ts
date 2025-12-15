@@ -4,7 +4,7 @@ import { HazelnutHook } from './HazelnutHook';
 import { ContainerMap, EntityID } from './types';
 
 export class MacademiaManager<C extends ContainerMap> {
-  containers: { [K in keyof C]?: ChestnutContainer<C[K]> } = {} as any;
+  containers: { [K in keyof C]?: ChestnutContainer<C[K]> } = {};
   hooks: Record<string, unknown> = {};
   entities: Set<EntityID> = new Set();
 

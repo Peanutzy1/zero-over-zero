@@ -6,15 +6,20 @@ import { ContainerMap, CullFn } from './types';
 export class HazelnutHook<C extends ContainerMap> {
   private culls: Array<CullFn> = [];
   private activeIDs: string[] = [];
+  private manager: MacademiaManager<C>;
+
+  constructor(manager: MacademiaManager<C>) {
+    this.manager = manager;
+  }
 
   addCull(fn: CullFn) {
     this.culls.push(fn);
   }
 
-  cull(initalIDs: string[], manager: MacademiaManager<C>) {
+  cull(initalIDs: string[]) {
     let ids = initalIDs;
     for (const cull of this.culls) {
-      ids = cull(ids, manager);
+      ids = cull(ids, this.manager);
     }
     this.activeIDs = ids;
   }

@@ -27,7 +27,7 @@ const elementPosition = positionContainer.get('entity1');
 console.log(elementPosition); // { x: 100, y: -100 }
 
 // Delete component
-positionContainer.del('entity1');
+positionContainer.delete('entity1');
 ```
 
 ## Manager
@@ -76,7 +76,7 @@ console.log(entity);
 // Output: { position: { x: 10, y: 20 }, health: 100 }
 
 // Delete an entity and its components
-manager.deleteEntityAndComponent('entity1')
+manager.deleteEntityAndComponents('entity1')
 ```
 
 ## Hook
@@ -86,7 +86,7 @@ A hook keeps track of which entities are “active” at any given moment. It st
   - think of it like a filter, each cull function filters out the ids that don't pass certain requirements
 2. ActiveIDs is the final list of entities that survived the culls
 - You create a hook using the HazelnutHook class in [here](../src/core/HazelnutHook) (veri silly)
-**NOTE**: you have to pass the ContainerMap Generic to the constructor so that the hook knows the manager's containers
+**NOTE**: The hook is generic over the same ContainerMap as the manager it operates on.
 ### Methods
   - addCull(fn: CullFn)
   - cull(initalIDs: string[], manager: MacademiaManager<C>)
@@ -115,18 +115,18 @@ positionContainer.add('entity1', { x: 0, y: 0 });
 healthContainer.add('entity1', 100);
 
 // Create a hook
-const aliveHook = new HazelnutHook<ContainerMap>();
+const aliveHook = new HazelnutHook<ContainerMap>(manager);
 
 // Add a cull function: only entities with health > 0
 aliveHook.addCull((ids, mgr) =>
-  ids.filter(id => (mgr.getEntity(id).health ?? 0) > 0)
+  ids.filter(id => (mgr.getComponents(id).health ?? 0) > 0)
 );
 
 // Add hook to manager
 manager.addHook('alive', aliveHook);
 
 // Run the hook on a set of IDs
-aliveHook.cull(['entity1', 'entity2'], manager);
+aliveHook.cull(['entity1', 'entity2']);
 
 // Run a function on active IDs
 aliveHook.runFunc(id => {

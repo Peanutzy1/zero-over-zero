@@ -3,7 +3,7 @@
 import { ContainerID } from "./types";
 
 export class ChestnutContainer<T> {
-  data: Map<ContainerID, T>;
+  private data: Map<ContainerID, T>;
   constructor() {
     this.data = new Map<string, T>();
   }
