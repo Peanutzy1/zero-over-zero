@@ -2,7 +2,7 @@
 
 import { MacademiaManager } from './MacademiaManager';
 
-export type CullFn = (ids: string[], manager: MacademiaManager<ContainerSchema>) => string[];
+export type CullFn<S extends ContainerSchema> = (ids: string[], manager: MacademiaManager<S>) => string[];
 
 export type EntityID = string;
 export type ContainerID = string;

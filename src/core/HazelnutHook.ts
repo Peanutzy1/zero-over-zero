@@ -4,7 +4,7 @@ import { MacademiaManager } from './MacademiaManager';
 import {ContainerSchema, CullFn, EntityID } from './types';
 
 export class HazelnutHook<S extends ContainerSchema> {
-  private culls: Array<CullFn> = [];
+  private culls: Array<CullFn<S>> = [];
   private activeIDs: string[] = [];
   private manager: MacademiaManager<S>;
 
@@ -12,7 +12,7 @@ export class HazelnutHook<S extends ContainerSchema> {
     this.manager = manager;
   }
 
-  addCull(fn: CullFn) {
+  addCull(fn: CullFn<S>) {
     this.culls.push(fn);
   }
 
