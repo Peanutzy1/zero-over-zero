@@ -1,7 +1,5 @@
-# Welcome to my button (maybe engine idk)
-i am trying to replicate the upgrade trees system from some roblox games
-
-its canvas based js
+# Welcome to PNZ API... an incremental game engine
+- its a major WIP right now
 
 here are my insparation: (both roblox games)
 
@@ -10,27 +8,14 @@ here are my insparation: (both roblox games)
 
 ## status
 ### current features:
-- a panable, zoomable world map (0, 0) is in center, and thus, most thing has their x, y centered (buttons for now) see [render.js](./scripts/render.js)
+- nothing
 
-- **note** move with wasd click buttons with mouse, touch controls will be added... later
-
-- very customizable (you fucking write your own draw() the type of customizable) elements inside world (there are defaults)
-
-- very custom button behavior ( you HAVE TO write your own requirements and action ) go to [button.js](./scripts/classes/button.js) for more infomation
-
-- (not really) intuitive trees (not really this is a joke)
-
-- jss (javascript style sheets) examples on that in [setup](./scripts/setup/pointTree.js)
-
-- the example is also in the link above.
 ### missing features ( my todo list)
-- links
-- ui (canvas done)
-- a fuckton more stuff will *probably* come
+- everything
 
 ## notes 
 **expect chaos im 14 while writing this and this is my first project**
 
-**i do use ai to help me on structure or advices, sometimes maybe write some snippets, but everything are all carefully reviewed and modified by me to fit the project's ideas**
+**i do use ai to help me on structure or advices, sometimes maybe write some config files, but everything are all carefully reviewed and modified by me to fit the project's ideas**
 
-- go to [info.md](./docs/general-info.md)
+- go to [info.md](./docs/general-info.md) for detailed documents (very wip)
