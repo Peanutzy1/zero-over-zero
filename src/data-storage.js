@@ -4,29 +4,34 @@
  * "I wonder where you get your data from" -peanut
  */
 
-export const ramhouse = {
-    // 100 MB of good ol ram
-    memory: new ArrayBuffer(100_000_000),
-    maxEntities: 10000,
-    generalFlags: carve(Uint32Array, maxEntities),
-    
+import { carve } from "./utils/zy.js"
+export const pea = {
+    buffer: new ArrayBuffer(100 * 1024 * 1024),
+    maxEntities: 10000
+}
+const buf = pea.buffer // array buffer
+const hiE = pea.maxEntities
+
+export const zy = {
+    idenityStates: carve(Uint32Array),
+    specializedStates: carve(Uint32Array),
+    x: carve(Float32Array)
 }
 
-/**
- * Carves out an typed array in the 100MB buffer.
- * @param {Uint8ArrayConstructor|Float32ArrayConstructor|Uint32ArrayConstructor|Float64ArrayConstructor} Type 
- * @param {number} count - How many elements to allocate
- * @returns {InstanceType<typeof Type>} - Returns the specific TypedArray view
- */
-let head = 0; // le pointer
-function carve(Type, count) {
-    const bytesPerElement = Type.BYTES_PER_ELEMENT;
+let head = 0
 
-    const alignment = bytesPerElement;
-    head = (head + alignment - 1) & ~(alignment - 1);
-    
-    const start = head;
-    head += count * bytesPerElement;
-    
-    return new Type(buffer, start, count);
+
+/**
+ * ONLY RUN THIS IN INITILIZATION
+ * RUNNING THIS IN THE GAME LOOP
+ * OR ANY REPEATABLE FUNCTIONS
+ * IS A MASSIVE PERFORMANCE HIT
+ * 
+ */
+let key = null
+const arrayStorage = zy
+function assign(id, configObj) {
+    for (key in configObj) {
+        arrayStorage[key][id] = configObj[key]
+    }
 }
