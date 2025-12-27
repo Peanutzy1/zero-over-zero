@@ -5,7 +5,6 @@
 import { loopi } from './gameloop.js';
 import { nut } from '../data-storage.js';
 
-(() => {
-    nut.lastTime = performance.now();
-    requestAnimationFrame(loopi)
-})
+
+nut.lastTime = performance.now();
+requestAnimationFrame(loopi);
