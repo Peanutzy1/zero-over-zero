@@ -13,7 +13,7 @@ export function loopi(currentTime) {
   update();
  
   if (nut.dt >= 250000) nut.dt = 250000
-  update(dt);
+  update(nut.dt);
 
   requestAnimationFrame(loopi);
 }
