@@ -1,10 +1,14 @@
 /**
- * this file contains the helpers for
- * the data storage
- * "at peanutTec, we store helpers seperately" -peanut
+ * this file contains all arrays and the bits
+ * "i welcom u to da stack of dis machin" -peanut
  */
+import { carve } from "../utils/data-storage";
+export const MAX_ENTITIES = 10000
 
-import { pea, nut, zy, buffer } from '../data-storage.js';
+export const BUFFER_SIZE = 100 * 1024 * 1024 // 100 mb
+export const buffer = new ArrayBuffer(BUFFER_SIZE)
+
+export let head = 0;
 
 /**
  * @param {
