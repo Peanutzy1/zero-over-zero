@@ -1,0 +1,36 @@
+[
+  {
+    "arguments": [
+      "/home/peanutzy/git-repos/emsdk/upstream/bin/clang",
+      "-target",
+      "wasm32-unknown-emscripten",
+      "-fignore-exceptions",
+      "-mllvm",
+      "-combiner-global-alias-analysis=false",
+      "-mllvm",
+      "-enable-emscripten-sjlj",
+      "-mllvm",
+      "-disable-lsr",
+      "--sysroot=/home/peanutzy/git-repos/emsdk/upstream/emscripten/cache/sysroot",
+      "-DEMSCRIPTEN",
+      "-Xclang",
+      "-iwithsysroot/include/fakesdl",
+      "-Xclang",
+      "-iwithsysroot/include/compat",
+      "-std=c23",
+      "-Iinclude",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wpedantic",
+      "-c",
+      "-o",
+      "/tmp/emscripten_temp_now_y4id/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/peanutzy/git-repos/zero-over-zero",
+    "file": "/home/peanutzy/git-repos/zero-over-zero/src/main.c",
+    "output": "/tmp/emscripten_temp_now_y4id/main.o"
+  }
+]
