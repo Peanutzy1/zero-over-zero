@@ -65,7 +65,7 @@ static inline uint16_t spawn(void)
     return id;
 }
 
-static inline void deleteEntity(uint16_t entityID)
+static inline void delete_entity(uint16_t entityID)
 {
     assert(entityID < slab->active_count);
 
