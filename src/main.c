@@ -12,9 +12,8 @@
 int main(void)
 {
     InitWindow(800, 450, "zero-over-zero");
-
     ZDrive *drive = z_drive_init();
-
+    
     if (!drive)
         return 1;
 
@@ -36,38 +35,11 @@ int main(void)
         z_movement(drive);
         z_zoom(drive);
         z_hitcheck(drive);
+        z_furry_processor(drive);
         
         z_system_loop(drive);
         z_render_loop(drive);
-
-        BeginDrawing();
-        EndDrawing();
     }
     CloseWindow();
     free(drive);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

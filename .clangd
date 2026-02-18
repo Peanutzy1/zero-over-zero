@@ -1,5 +1,16 @@
 CompileFlags:
-  Add: 
-    - "-I/usr/include"
-    - "-std=c23"
-  CompilationDatabase: "."
+  Add: [
+    -std=c23, 
+    -Wall, 
+    -Wextra, 
+    -Wpedantic, 
+    -Wshadow, # Warns you if you name a variable the same as one in a higher scope
+    -I/usr/include
+  ]
+
+Index:
+  Background: Build
+
+InlayHints:
+  Enabled: Yes
+  ParameterNames: Yes

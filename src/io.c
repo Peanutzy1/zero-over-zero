@@ -2,6 +2,8 @@
 #include <raylib.h> 
 
 // initialize inputs (mouse)
+
+/*
 inline void z_input_init(ZDrive *drive) 
 {
     drive->mouse_screen = GetMousePosition();
@@ -10,6 +12,7 @@ inline void z_input_init(ZDrive *drive)
         drive->camera
     );
 }
+*/
 
 // initialize screen
 inline void z_output_init(ZDrive *drive) 
@@ -30,10 +33,10 @@ inline void z_output_init(ZDrive *drive)
 inline void z_io_init(ZDrive *drive) 
 {
     z_output_init(drive);
-    z_input_init(drive);
 }
 
 // recalculate mouse position
+/*
 inline void z_input_loop(ZDrive *drive) 
 {
     drive->mouse_screen = GetMousePosition();
@@ -43,8 +46,9 @@ inline void z_input_loop(ZDrive *drive)
     );
 
     // Branchless update of mouse state bit
-    drive->mouse_states = (drive->mouse_states & ~(Z_MOUSE_LEFT)) | (IsMouseButtonDown(0) ? Z_MOUSE_LEFT : 0);
+    drive->mouse_states = (drive->mouse_states & ~(Z_MOUSE_LEFT)) | (IsMouseButtonDown(MOUSE_BUTTON_LEFT) ? Z_MOUSE_LEFT : 0);
 }
+*/
 
 inline void z_output_loop(ZDrive *drive) 
 {
@@ -64,5 +68,4 @@ inline void z_output_loop(ZDrive *drive)
 inline void z_io_loop(ZDrive *drive) 
 {
     z_output_loop(drive);
-    z_input_loop(drive);
 }
