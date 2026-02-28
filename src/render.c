@@ -3,9 +3,9 @@
 #include <raylib.h>
 // #include <stdio.h> incase i need testing
 
-inline int z_render_init() { return 0; }
+int z_render_init() { return 0; }
 
-inline void z_render_button(ZDrive *drive)
+void z_render_button(ZDrive *drive)
 {
     ZRenderSlab *render_slab = &drive->render_slab;
     ZChunk chunk = render_slab->chunks[0];
@@ -25,7 +25,8 @@ inline void z_render_button(ZDrive *drive)
         DrawRectangleRec(rect, color);
     };
 }
-inline void z_draw_ui(ZDrive *drive)
+
+void z_draw_ui(ZDrive *drive)
 {
     Vector2 center = {drive->screen_size.x / 2.0f, drive->screen_size.y / 2.0f};
     Color cross_color = GREEN;
@@ -50,7 +51,8 @@ inline void z_draw_ui(ZDrive *drive)
                (Vector2){center.x + cross_size, center.y}, cross_thickness,
                cross_color);
 }
-inline void z_render_loop(ZDrive *drive)
+
+void z_render_loop(ZDrive *drive)
 {
     BeginDrawing();
     ClearBackground(GetColor(0x000000ff));

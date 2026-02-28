@@ -7,7 +7,7 @@
 #include "z-args-types.h" // IWYU pragma: keep
 #include "z-types.h"
 
-inline void z_render_slab_init(ZDrive *drive)
+void z_render_slab_init(ZDrive *drive)
 {
     ZSlabHeader *header = &drive->render_slab.head;
     memset(header->index_to_chunk, 0xFF, sizeof(header->index_to_chunk));
@@ -24,7 +24,7 @@ void z_noop (ZDrive* drive) {
     printf("if you see this message uhhhhhhh oopsie i forgot to assign a value to this button. \n lemme use this thing %zu", sizeof(*drive));
 }
 
-inline void z_logic_slab_init(ZDrive *drive)
+void z_logic_slab_init(ZDrive *drive)
 {
     ZSlabHeader *header = &drive->logic_slab.head;
     memset(header->index_to_chunk, 0xFF, sizeof(header->index_to_chunk));
@@ -41,7 +41,7 @@ inline void z_logic_slab_init(ZDrive *drive)
     }
 }
 
-inline ZDrive *z_drive_init()
+ZDrive *z_drive_init()
 {
     ZDrive *drive = calloc(1, sizeof(ZDrive));
     if (!drive)

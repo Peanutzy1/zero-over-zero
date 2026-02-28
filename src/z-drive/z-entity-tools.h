@@ -3,7 +3,7 @@
 #include "z-types.h"
 #include <assert.h>
 
-inline bool z_chunk_has_space(ZChunk *chunks, uint8_t chunk_id)
+bool z_chunk_has_space(ZChunk *chunks, uint8_t chunk_id)
 {
     ZChunk *chunk = &chunks[chunk_id];
 
@@ -20,7 +20,7 @@ inline bool z_chunk_has_space(ZChunk *chunks, uint8_t chunk_id)
     return (chunk->start_index + chunk->count < MAX_ENTITIES);
 }
 
-inline bool z_checkif_entity_available(ZDrive* drive, ZEntityId id) {
+bool z_checkif_entity_available(ZDrive* drive, ZEntityId id) {
     ZEntityId* id_list = drive->id_used;
     for (int i = 0; i < drive->used_id_count; i++) 
     {
@@ -30,7 +30,7 @@ inline bool z_checkif_entity_available(ZDrive* drive, ZEntityId id) {
     return true;
 }
 
-inline void z_entity_add(ZDrive *drive, ZEntityId id)
+void z_entity_add(ZDrive *drive, ZEntityId id)
 {
     assert(z_checkif_entity_available(drive, id));
 
@@ -38,7 +38,7 @@ inline void z_entity_add(ZDrive *drive, ZEntityId id)
     drive->used_id_count++;
 }
 
-inline void z_entity_init_render(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
+void z_entity_init_render(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
     ZRenderSlab* rs = &drive->render_slab;
     assert(z_chunk_has_space(rs->chunks, chunk));
 
@@ -53,7 +53,7 @@ inline void z_entity_init_render(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
     header->index_to_chunk[render_slab_index] = chunk;
 }
 
-inline void z_entity_init_logic(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
+void z_entity_init_logic(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
     ZLogicSlab* ls = &drive->logic_slab;
     assert(z_chunk_has_space(ls->chunks, chunk));
 
@@ -68,7 +68,7 @@ inline void z_entity_init_logic(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
     header->index_to_chunk[render_slab_index] = chunk;
 }
 
-inline ZEntityIndex z_entity_header_remove (
+ZEntityIndex z_entity_header_remove (
     ZSlabHeader *header, ZChunk *chunks,
     ZEntityId id_to_remove,
     ZEntityIndex *out_last_index
@@ -89,7 +89,7 @@ inline ZEntityIndex z_entity_header_remove (
     return hole_index;
 }
 
-inline void z_entity_remove(ZDrive *drive, ZEntityId id_to_remove)
+void z_entity_remove(ZDrive *drive, ZEntityId id_to_remove)
 {
     ZEntityIndex last_index; // changes per slab
     ZSlabHeader *header = &drive->render_slab.head;

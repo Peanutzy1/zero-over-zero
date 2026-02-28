@@ -1,10 +1,10 @@
 CC = clang
 
-MY_CFLAGS = -std=c23 -I/usr/include -O3 -Wall -Wextra -Werror
-LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-
 SRC = src/main.c
-OUT = build/zero-over-zero
+OUT = build/zero-over-zero.exe
+
+MY_CFLAGS = -std=c23 -I/C/msys64/ucrt64/include -O3 -Wall -Wextra -Werror -DPLATFORM_DESKTOP
+LIBS = -L/C/msys64/ucrt64/lib -lraylib -lgdi32 -lwinmm -lopengl32 -lshell32
 
 all:
 	mkdir -p build

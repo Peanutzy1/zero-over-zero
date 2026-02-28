@@ -3,11 +3,11 @@
 
 #include "./z-drive/z-types.h"
 
-inline void z_system_init(ZDrive *drive) { drive->move_speed = 1000; }
+void z_system_init(ZDrive *drive) { drive->move_speed = 1000; }
 
-inline ZDrive *z_system_loop(ZDrive *drive) { return drive; }
+ZDrive* z_system_loop(ZDrive *drive) { return drive; }
 
-inline void z_movement(ZDrive *drive)
+void z_movement(ZDrive *drive)
 {
     float movement = drive->move_speed * drive->delta_time;
     drive->camera_position.x +=
@@ -16,7 +16,7 @@ inline void z_movement(ZDrive *drive)
         movement * (IsKeyDown(KEY_S) - IsKeyDown(KEY_W));
 }
 
-inline void z_zoom(ZDrive *drive)
+void z_zoom(ZDrive *drive)
 {
     if (IsKeyPressed(KEY_I))
         drive->camera.zoom += 0.25f;
@@ -29,40 +29,7 @@ inline void z_zoom(ZDrive *drive)
         drive->camera.zoom = 10.0f;
 }
 
-/*
-inline void z_hitcheck(ZDrive *drive) {
-    ZRenderSlab *render_slab = &drive->render_slab;
-
-    // no chunks doesnt get mutated midrun
-    ZChunk chunk = render_slab->chunks[0];
-
-    // FUTURE: change 0 to dedicated button chunk / chunks
-    for (int i = chunk.start_index; i < chunk.count; i++)
-    {
-        Rectangle whatever_this_is = {
-            render_slab->positions[i].x,
-            render_slab->positions[i].y,
-            render_slab->sizes[i].x,
-            render_slab->sizes[i].y,
-        };
-
-        // i feel my sins crawling out of my body seeing this
-
-        if (CheckCollisionPointRec(drive->mouse_world, whatever_this_is)) {
-            render_slab->bitmasks[i] |= IS_HOVERED;
-            if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-                render_slab->bitmasks[i] |= IS_PRESSED;
-            } else {
-                render_slab->bitmasks[i] &= ~(IS_PRESSED);
-            }
-        } else {
-            render_slab->bitmasks[i] &= ~(IS_HOVERED);
-        }
-    }
-}
-*/
-
-inline void z_hitcheck(ZDrive* drive)
+void z_hitcheck(ZDrive* drive)
 {
     ZRenderSlab* render_slab = &drive->render_slab;
     ZCmdBuffer* cmd_buff = &drive->command_buffer;
@@ -112,7 +79,7 @@ inline void z_hitcheck(ZDrive* drive)
     }
 }
 
-inline void z_furry_processor(ZDrive* drive) {
+void z_furry_processor(ZDrive* drive) {
     ZCmdBuffer* cmd_buff = &drive->command_buffer;
     ZLogicSlab* ls = &drive->logic_slab;
     for (int i = 0; i < cmd_buff->clicking_count; i++) {

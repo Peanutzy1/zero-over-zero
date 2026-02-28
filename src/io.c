@@ -4,7 +4,7 @@
 // initialize inputs (mouse)
 
 /*
-inline void z_input_init(ZDrive *drive) 
+void z_input_init(ZDrive *drive) 
 {
     drive->mouse_screen = GetMousePosition();
     drive->mouse_world = GetScreenToWorld2D(
@@ -15,7 +15,7 @@ inline void z_input_init(ZDrive *drive)
 */
 
 // initialize screen
-inline void z_output_init(ZDrive *drive) 
+void z_output_init(ZDrive *drive) 
 {
     drive->screen_size.x = GetScreenWidth();
     drive->screen_size.y = GetScreenHeight();
@@ -30,14 +30,14 @@ inline void z_output_init(ZDrive *drive)
 }
 
 // wrapper fn
-inline void z_io_init(ZDrive *drive) 
+void z_io_init(ZDrive *drive) 
 {
     z_output_init(drive);
 }
 
 // recalculate mouse position
 /*
-inline void z_input_loop(ZDrive *drive) 
+void z_input_loop(ZDrive *drive) 
 {
     drive->mouse_screen = GetMousePosition();
     drive->mouse_world = GetScreenToWorld2D(
@@ -50,7 +50,7 @@ inline void z_input_loop(ZDrive *drive)
 }
 */
 
-inline void z_output_loop(ZDrive *drive) 
+void z_output_loop(ZDrive *drive) 
 {
     if (IsWindowResized()) 
     {
@@ -65,7 +65,7 @@ inline void z_output_loop(ZDrive *drive)
     drive->camera.target = drive->camera_position;
 }
 
-inline void z_io_loop(ZDrive *drive) 
+void z_io_loop(ZDrive *drive) 
 {
     z_output_loop(drive);
 }
