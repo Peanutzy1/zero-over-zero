@@ -20,7 +20,7 @@ void z_render_slab_init(ZDrive *drive)
     }
 }
 
-void z_noop (ZDrive* drive) {
+void z_debug (ZDrive* drive) {
     printf("if you see this message uhhhhhhh oopsie i forgot to assign a value to this button. \n lemme use this thing %zu", sizeof(*drive));
 }
 
@@ -37,7 +37,7 @@ void z_logic_slab_init(ZDrive *drive)
     }
 
     for (int i = 0; i < MAX_ENTITIES; i++) {
-        drive->logic_slab.onclicks[i] = &z_noop;
+        drive->logic_slab.onclicks[i] = &z_debug;
     }
 }
 
