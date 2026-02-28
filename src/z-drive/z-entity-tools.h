@@ -45,11 +45,11 @@ void z_entity_init_render(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
     ZSlabHeader* header = &rs->head;
     ZChunk* zchunk = &rs->chunks[chunk];
 
-    ZEntityIndex render_slab_index = zchunk->start_index + zchunk->count;
+    ZEntityIdx render_slab_index = zchunk->start_index + zchunk->count;
     zchunk->count++;
 
-    header->id_to_index[id] = render_slab_index;
-    header->index_to_id[render_slab_index] = id;
+    header->id_to_idx[id] = render_slab_index;
+    header->idx_to_id[render_slab_index] = id;
     header->index_to_chunk[render_slab_index] = chunk;
 }
 
@@ -60,29 +60,29 @@ void z_entity_init_logic(ZDrive *drive, ZEntityId id, ZChunkId chunk) {
     ZSlabHeader* header = &ls->head;
     ZChunk* zchunk = &ls->chunks[chunk];
 
-    ZEntityIndex render_slab_index = zchunk->start_index + zchunk->count;
+    ZEntityIdx render_slab_index = zchunk->start_index + zchunk->count;
     zchunk->count++;
 
-    header->id_to_index[id] = render_slab_index;
-    header->index_to_id[render_slab_index] = id;
+    header->id_to_idx[id] = render_slab_index;
+    header->idx_to_id[render_slab_index] = id;
     header->index_to_chunk[render_slab_index] = chunk;
 }
 
-ZEntityIndex z_entity_header_remove (
+ZEntityIdx z_entity_header_remove (
     ZSlabHeader *header, ZChunk *chunks,
     ZEntityId id_to_remove,
-    ZEntityIndex *out_last_index
+    ZEntityIdx *out_last_index
 ) {
-    ZEntityIndex hole_index = header->id_to_index[id_to_remove];
+    ZEntityIdx hole_index = header->id_to_idx[id_to_remove];
     uint8_t cid = header->index_to_chunk[hole_index];
     ZChunk *chunk = &chunks[cid];
 
     *out_last_index = chunk->start_index + chunk->count - 1;
 
-    ZEntityId last_id = header->index_to_id[*out_last_index];
+    ZEntityId last_id = header->idx_to_id[*out_last_index];
 
-    header->id_to_index[last_id] = hole_index;
-    header->index_to_id[hole_index] = last_id;
+    header->id_to_idx[last_id] = hole_index;
+    header->idx_to_id[hole_index] = last_id;
     header->index_to_chunk[hole_index] = cid;
 
     chunk->count--;
@@ -91,10 +91,10 @@ ZEntityIndex z_entity_header_remove (
 
 void z_entity_remove(ZDrive *drive, ZEntityId id_to_remove)
 {
-    ZEntityIndex last_index; // changes per slab
+    ZEntityIdx last_index; // changes per slab
     ZSlabHeader *header = &drive->render_slab.head;
     ZChunk *chunks = drive->render_slab.chunks;
-    ZEntityIndex hole_idx =
+    ZEntityIdx hole_idx =
         z_entity_header_remove(header, chunks, id_to_remove, &last_index);
     drive->render_slab.positions[hole_idx] = drive->render_slab.positions[last_index];
     drive->used_id_count--;

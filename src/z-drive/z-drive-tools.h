@@ -41,15 +41,27 @@ void z_logic_slab_init(ZDrive *drive)
     }
 }
 
-ZDrive *z_drive_init()
+ZCore* z_core_init()
 {
-    ZDrive *drive = calloc(1, sizeof(ZDrive));
-    if (!drive)
+    ZCore *core = calloc(1, sizeof(ZCore));
+    if (!core)
         return nullptr;
 
-    drive->used_id_count = 0;
+    core->used_id_count = 0;
+    core->last_offset_count = 0;
+    
+    return core;
+}
 
-    z_render_slab_init(drive);
-    z_logic_slab_init(drive);
-    return drive;
+void z_core_allocate_entities(ZCore* core, ZEntityId count) {
+    if (core->slab_id_offset == 0) {
+        core->slab_id_offset[core->id_offset_count++] = 0;
+        core->last_offset_count = count;
+    } else {
+        core->slab_id_offset[core->id_offset_count] 
+        = core->slab_id_offset[core->id_offset_count - 1] 
+        + core->last_offset_count;
+        core->last_offset_count = count;
+        core->id_offset_count++;
+    }
 }

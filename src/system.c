@@ -63,7 +63,7 @@ void z_hitcheck(ZDrive* drive)
 
         if (CheckCollisionRecs(whatever_this_is, center_box))
         {
-            ZEntityId id = render_slab->head.index_to_id[i];
+            ZEntityId id = render_slab->head.idx_to_id[i];
             cmd_buff->hovering[cmd_buff->hovering_count] = id;
             cmd_buff->hovering_count++;
             render_slab->bitmasks[i] |= IS_HOVERED;
@@ -83,7 +83,7 @@ void z_furry_processor(ZDrive* drive) {
     ZCmdBuffer* cmd_buff = &drive->command_buffer;
     ZLogicSlab* ls = &drive->logic_slab;
     for (int i = 0; i < cmd_buff->clicking_count; i++) {
-        ls->onclicks[ls->head.id_to_index[cmd_buff->clicking[i]]](drive);
+        ls->onclicks[ls->head.id_to_idx[cmd_buff->clicking[i]]](drive);
     }
     cmd_buff->clicking_count = 0;
     cmd_buff->hovering_count = 0;
