@@ -21,10 +21,6 @@ typedef struct
     ZEntityIdx start_index;
 } ZChunk;
 
-#include "systems/buttons.h"
-#include "z-drive/z-entity-tools.h"
-#include "z-drive/z-types.h"
-
 typedef enum
 {
     IS_HOVERED = 1 << 0,
@@ -33,7 +29,7 @@ typedef enum
     WBSLAB_CCOUNT = 16,
 } bslab_globals;
 
-typedef void (*ZAction)(ZDrive* den);
+typedef void (*ZAction)(ZCore* den);
 
 typedef struct
 {
