@@ -29,7 +29,7 @@ typedef enum
     WBSLAB_CCOUNT = 16,
 } bslab_globals;
 
-typedef void (*ZAction)(ZCore* den);
+typedef void (*ZAction)(ZSlab* den);
 
 typedef struct
 {
