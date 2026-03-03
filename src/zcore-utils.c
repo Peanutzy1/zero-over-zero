@@ -38,7 +38,7 @@ void z_entity_add(ZCore *core, ZEntityId id)
     core->id_used[core->used_id_count++] = id;
 }
 
-inline bool z_chunk_has_space(ZChunk *chunks, ZChunkId chunk_id)
+bool z_chunk_has_space(ZChunk *chunks, ZChunkId chunk_id)
 {
     ZChunk *chunk = &chunks[chunk_id];
 
