@@ -1,71 +1,42 @@
-#include "z-drive/z-types.h"
+#include "zcore.h"
 #include <raylib.h> 
 
-// initialize inputs (mouse)
-
-/*
-void z_input_init(ZDrive *drive) 
+void z_output_init(ZCore *core) 
 {
-    drive->mouse_screen = GetMousePosition();
-    drive->mouse_world = GetScreenToWorld2D(
-        drive->mouse_screen,
-        drive->camera
-    );
-}
-*/
+    core->screen_size.x = GetScreenWidth();
+    core->screen_size.y = GetScreenHeight();
 
-// initialize screen
-void z_output_init(ZDrive *drive) 
-{
-    drive->screen_size.x = GetScreenWidth();
-    drive->screen_size.y = GetScreenHeight();
-
-    drive->camera.target = (Vector2){ 0.0f, 0.0f };
-    drive->camera.offset = (Vector2){
-        drive->screen_size.x / 2.0f,
-        drive->screen_size.y / 2.0f
+    core->camera.target = (Vector2){ 0.0f, 0.0f };
+    core->camera.offset = (Vector2){
+        core->screen_size.x / 2.0f,
+        core->screen_size.y / 2.0f
     };
-    drive->camera.rotation = 0.0f;
-    drive->camera.zoom = 1.0f;
+    core->camera.rotation = 0.0f;
+    core->camera.zoom = 1.0f;
 }
 
 // wrapper fn
-void z_io_init(ZDrive *drive) 
+void z_io_init(ZCore *core) 
 {
-    z_output_init(drive);
+    z_output_init(core);
 }
 
-// recalculate mouse position
-/*
-void z_input_loop(ZDrive *drive) 
-{
-    drive->mouse_screen = GetMousePosition();
-    drive->mouse_world = GetScreenToWorld2D(
-        drive->mouse_screen,
-        drive->camera
-    );
-
-    // Branchless update of mouse state bit
-    drive->mouse_states = (drive->mouse_states & ~(Z_MOUSE_LEFT)) | (IsMouseButtonDown(MOUSE_BUTTON_LEFT) ? Z_MOUSE_LEFT : 0);
-}
-*/
-
-void z_output_loop(ZDrive *drive) 
+void z_output_loop(ZCore *core) 
 {
     if (IsWindowResized()) 
     {
-        drive->screen_size.x = GetScreenWidth();
-        drive->screen_size.y = GetScreenHeight();
-        drive->camera.offset = (Vector2){
-            drive->screen_size.x / 2.0f,
-            drive->screen_size.y / 2.0f
+        core->screen_size.x = GetScreenWidth();
+        core->screen_size.y = GetScreenHeight();
+        core->camera.offset = (Vector2){
+            core->screen_size.x / 2.0f,
+            core->screen_size.y / 2.0f
         };
     }; // this if statement is fine because this rarely runs, therefore predictable to branch predictor
 
-    drive->camera.target = drive->camera_position;
+    core->camera.target = core->camera_position;
 }
 
-void z_io_loop(ZDrive *drive) 
+void z_io_loop(ZCore *core) 
 {
-    z_output_loop(drive);
+    z_output_loop(core);
 }
