@@ -189,14 +189,7 @@ void wbslab_culler_labeler(ZWorldButtonSlab *wbslab) {
         (arr)[(i)] = (arr)[(j)];                                                                                       \
         (arr)[(j)] = _tmp;                                                                                             \
     } while (0)
-
-#define SLAB_SWAP(arr, i, j)                                                                                           \
-    do {                                                                                                               \
-        __auto_type _tmp = (arr)[(i)];                                                                                 \
-        (arr)[(i)] = (arr)[(j)];                                                                                       \
-        (arr)[(j)] = _tmp;                                                                                             \
-    } while (0)
-
+    
 void wbslab_culler_swapper(ZWorldButtonSlab *wbslab, ZEntityIdx idx1, ZEntityIdx idx2) {
     if (idx1 == idx2)
         return;
