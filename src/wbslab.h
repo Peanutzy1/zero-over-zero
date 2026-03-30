@@ -47,3 +47,13 @@ void wbslab_add(ZWorldButtonSlab *wbslab, ZEntityId id, Vector2 position, Vector
 void wbslab_hitcheck(ZCore *core);
 
 void wbslab_furry_onclick_processor(ZCore *core);
+
+void wbslab_culler_labeler(ZWorldButtonSlab *wbslab)
+
+void wbslab_culler_swapper(ZWorldButtonSlab *wbslab, ZEntityIdx idx1, ZEntityIdx idx2)
+
+void wbslab_insertion_sort_cull_everything_becuz_whynot(ZWorldButtonSlab *wbslab)
+
+void wbslab_now_i_accumulate_so_theres_starting_idxs_and_location(ZWorldButtonSlab *wbslab)
+
+void wbslab_culler(ZWorldButtonSlab *wbslab)
