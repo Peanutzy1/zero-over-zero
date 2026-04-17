@@ -12,13 +12,7 @@
 
 int main(void) {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
-
-    InitWindow(1920, 1080, "zero-over-zero");
-
-    if (!IsWindowFullscreen()) {
-        ToggleFullscreen();
-    }
-
+    
     InitWindow(0, 0, "zero-over-zero");
     ZCore *core = z_core_init();
 
