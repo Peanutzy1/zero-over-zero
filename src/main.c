@@ -1,36 +1,24 @@
 // The single transportation unit
-
-#include "zcore.h"
 #include <raylib.h>
+#include <stdlib.h>
 
-#include "io.c"
-#include "mod/setup.c"
-#include "render.c"
-#include "system.c"
-#include "wbslab-fn.c"
-#include "zcore-utils.c"
+#include "zero.h"
 
 int main(void) {
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
-    
-    InitWindow(0, 0, "zero-over-zero");
-    ZCore *core = z_core_init();
+    // before making core
+    ZCore* core = z_core_init();
 
-    if (!core)
-        return 1;
-
+    // after making core
     wbslab_init(core);
-
-    z_setup(core);
-
-    PollInputEvents();
 
     z_io_init(core);
 
-    z_render_init();
     z_system_init(core);
 
-    SetConfigFlags(FLAG_VSYNC_HINT);
+    z_setup(core);
+
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+    InitWindow(0, 0, "zero-over-zero");
 
     while (!WindowShouldClose()) {
         z_io_loop(core);
@@ -38,8 +26,6 @@ int main(void) {
 
         z_movement(core);
         z_zoom(core);
-
-        wbslab_update_visible_set(core);
 
         wbslab_hitcheck(core);
 

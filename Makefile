@@ -1,14 +1,18 @@
 CC = clang
 
-SRC = src/main.c
-OUT = build/zero-over-zero.exe
+SRCS = $(wildcard src/*.c)
+OUT = build/zero-over-zero
 
-MY_CFLAGS = -std=c23 -I/C/msys64/ucrt64/include -O3 -Wall -Wextra -Werror -DPLATFORM_DESKTOP
-LIBS = -L/C/msys64/ucrt64/lib -lraylib -lgdi32 -lwinmm -lopengl32 -lshell32
+MY_CFLAGS = -std=c23 -O0 -Wall -Wextra -Wpedantic -Werror -DPLATFORM_DESKTOP
+LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-all:
-	mkdir -p build
-	$(CC) $(SRC) -o $(OUT) $(MY_CFLAGS) $(LIBS)
+.PHONY: all run clean
+
+all: $(OUT)
+
+$(OUT): $(SRCS)
+	@mkdir -p build
+	$(CC) $(SRCS) -o $(OUT) $(MY_CFLAGS) $(LIBS)
 
 run: all
 	./$(OUT)
