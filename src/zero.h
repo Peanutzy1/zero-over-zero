@@ -12,6 +12,7 @@
  */
 
 #define MAX_ENTITIES 16384
+#define MAX_SLABS 16
 #define CHUNK_WIDTH (1 << 10)
 #define CHUNK_HEIGHT (1 << 10)
 #define CHUNK_WIDTH_F 1024.0
@@ -25,9 +26,11 @@ typedef int16_t ZEntityId;
 typedef int16_t ZEntityIdx;
 typedef int16_t ZEntityMaxAmount;
 typedef int16_t ZChunkId;
+typedef int16_t ZSlabId;
 
 // Forward declaring the context struct so I can typedef the function pointer below.
 typedef struct ZCore ZCore;
+typedef struct ZWorldButtonSlab ZWorldButtonSlab;
 
 // This is a universal function pointer for behavior, so it can run via other code in the system
 typedef void (*ZAction)(ZCore* den);
@@ -36,14 +39,33 @@ typedef void (*ZAction)(ZCore* den);
  * ======================= MISCELLANOUS STRUCTS DEFINITIONS
  */
 
-/*
+/* ========= ZChunk
  * The ZChunk is used inside a slab to subdivide the slab, making it rigid but fast for looping
- * A use is for viewport culling in my ZWorldButtonSlab.
+ * A use is for viewport culling in my ZWorldButtonSlab. (not used atm)
  */
+
+/*
 typedef struct {
     ZEntityMaxAmount count; // number of entities this chunk CURRENTLY has (don't count nonexistent things.)
     ZEntityIdx start_index;
 } ZChunk;
+*/
+
+/* ========= ZMeta
+ * Stores a slab pointer and its index in the slab.
+ * Nothing else
+ * Absolutely nothing else.
+ * I use it for the id_to_meta array in ZCore
+ */
+
+typedef enum {
+    WBSLAB = 1,
+} Slab_ids;
+
+typedef struct {
+    ZEntityIdx idx;
+    ZSlabId slab_id;
+} ZMetaData;
 
 /*
  * ======================= ZWorldButtonSlab
@@ -70,13 +92,12 @@ typedef struct {
     int hovering_count;
     int clicking_count;
     int visible_chunk_count;
-} ZWorldButtonCmdBuffer;
+} ZCommandBuffer;
 
-typedef struct {
+struct ZWorldButtonSlab {
     int entity_count;
     int chunk_count;
 
-    ZEntityIdx id_to_idx[MAX_ENTITIES]; // Maps global ID to local slab index
     ZEntityId idx_to_id[WBSLAB_ECOUNT]; // Maps local slab index to global ID
 
     Vector2 positions[WBSLAB_ECOUNT];
@@ -85,14 +106,7 @@ typedef struct {
     ZAction onclicks[WBSLAB_ECOUNT];
     int level_max[WBSLAB_ECOUNT];
     int level_current[WBSLAB_ECOUNT];
-
-    ZChunkId idx_to_chunk_location[WBSLAB_ECOUNT];
-
-    ZChunkId chunk_location[WBSLAB_CCOUNT];
-    ZChunk chunks[WBSLAB_CCOUNT];
-
-    ZWorldButtonCmdBuffer buffer;
-} ZWorldButtonSlab;
+};
 
 /* ======================= ZCore
  * - A context struct to store global variables and slab pointers
@@ -102,6 +116,10 @@ typedef struct {
 struct ZCore {
     ZEntityId id_used[MAX_ENTITIES];
     ZEntityId used_id_count;
+    
+    ZMetaData id_to_metadata[MAX_ENTITIES]; // Maps global ID to local slab index and slab pointer
+    void* slab_lookup_table[MAX_SLABS];
+    ZCommandBuffer buffer;
 
     ZWorldButtonSlab* wbslab;
 
@@ -144,6 +162,13 @@ void z_render_loop(ZCore* core);
 // All the entity definitions and setup goes here.
 void z_setup(ZCore* core);
 
+// hitcheck handler
+void z_system_hitcheck(ZCore* core);
+
+// clicking handler
+void z_furry_onclick_processor(ZCore* core);
+
+
 /**
  * ========================= ZCore-related functions
  * - These are functions that are usually related to ZCore's setup or managing entities in ZCore
@@ -173,15 +198,11 @@ void z_entity_add(ZCore* core, ZEntityId id);
 void wbslab_init(ZCore* core); // allocates wbslab and set up id->idx idx->id
 
 // Requires a valid ZEntityId, along with all properties, and set it onto the slab.
-void wbslab_add(ZWorldButtonSlab* wbslab, ZEntityId id, Vector2 position, Vector2 size, ZAction onclick);
+void wbslab_add(ZCore* core, ZEntityId id, Vector2 position, Vector2 size, ZAction onclick);
 
 // ============== LOOP FUNCTIONS
 
 void wbslab_render(ZWorldButtonSlab* wbslab); // draws locally all the buttons
-
-void wbslab_hitcheck(ZCore* core); // requires mouse so i need core
-
-void wbslab_furry_onclick_processor(ZCore* core); // requires the camera so i need core
 
 /** DEPRECATED ZONE (sad) */
 /**

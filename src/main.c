@@ -1,4 +1,3 @@
-// The single transportation unit
 #include <raylib.h>
 #include <stdlib.h>
 
@@ -27,9 +26,9 @@ int main(void) {
         z_movement(core);
         z_zoom(core);
 
-        wbslab_hitcheck(core);
+        z_system_hitcheck(core);
 
-        wbslab_furry_onclick_processor(core);
+        z_furry_onclick_processor(core);
 
         z_render_loop(core);
     }

@@ -8,9 +8,9 @@
 void wbslab_init(ZCore* core) {
     core->wbslab = (ZWorldButtonSlab* )calloc(1, sizeof(ZWorldButtonSlab));
     assert(core->wbslab);
+    core->slab_lookup_table[WBSLAB] = core->wbslab;
 
     ZWorldButtonSlab* wbslab = core->wbslab;
-    memset(wbslab->id_to_idx, 0xFF, sizeof(wbslab->id_to_idx));
     memset(wbslab->idx_to_id, 0xFF, sizeof(wbslab->idx_to_id));
 
     for (int i = 0; i < WBSLAB_ECOUNT; i++) {
@@ -21,14 +21,17 @@ void wbslab_init(ZCore* core) {
 }
 
 void wbslab_add(
-    ZWorldButtonSlab* wbslab,
+    ZCore* core,
     ZEntityId id,
     Vector2 position, Vector2 size,
     ZAction onclick
 ) {
+    ZWorldButtonSlab* wbslab = core->wbslab;
     assert(wbslab->entity_count < WBSLAB_ECOUNT);
     ZEntityIdx idx = wbslab->entity_count++;
-    wbslab->id_to_idx[id] = idx;
+    ZMetaData* metadata = &core->id_to_metadata[id];
+    metadata->idx = idx;
+    metadata->slab_id = WBSLAB;
     wbslab->idx_to_id[idx] = id;
     wbslab->positions[idx] = position;
     wbslab->sizes[idx] = size;
@@ -62,71 +65,6 @@ void wbslab_render(ZWorldButtonSlab* wbslab) {
     for (int idx = 0; idx < wbslab->entity_count; idx++) {
         wbslab_render_entity(wbslab, idx);
     }
-}
-
-void wbslab_hitcheck(ZCore* core) {
-    ZWorldButtonSlab* wbslab = core->wbslab;
-    ZWorldButtonCmdBuffer* buffer = &wbslab->buffer;
-
-    float half_screen_w = core->screen_size.x / 2.0f;
-    float half_screen_h = core->screen_size.y / 2.0f;
-    int box_size = 10;
-
-    Vector2 center_world = GetScreenToWorld2D(
-        (Vector2){ half_screen_w, half_screen_h },
-        core->camera
-    );
-
-    Rectangle center_box = {
-        center_world.x - (box_size / 2.0f),
-        center_world.y - (box_size / 2.0f),
-        (float)box_size,
-        (float)box_size
-    };
-
-    bool clicked = IsKeyPressed(KEY_ENTER);
-
-    for (int i = 0; i < wbslab->entity_count; i++) {
-        Rectangle button_rect = {
-            wbslab->positions[i].x,
-            wbslab->positions[i].y,
-            wbslab->sizes[i].x,
-            wbslab->sizes[i].y,
-        };
-
-        if (!CheckCollisionRecs(button_rect, center_box)) {
-            wbslab->bitmasks[i] &= ~IS_HOVERED;
-            continue;
-        }
-
-        ZEntityId id = wbslab->idx_to_id[i];
-
-        if (buffer->hovering_count < 16) {
-            buffer->hovering[buffer->hovering_count++] = id;
-        }
-
-        wbslab->bitmasks[i] |= IS_HOVERED;
-
-        if (!clicked) continue;
-
-        wbslab->bitmasks[i] |= IS_CLICKED;
-
-        if (buffer->clicking_count < 16) {
-            buffer->clicking[buffer->clicking_count++] = id;
-        };
-    }
-}
-
-void wbslab_furry_onclick_processor(ZCore* core) {
-    ZWorldButtonSlab* wbslab = core->wbslab;
-    ZWorldButtonCmdBuffer* buffer = &wbslab->buffer;
-    for (int i = 0; i < buffer->clicking_count; i++) {
-        wbslab->onclicks[wbslab->id_to_idx[buffer->clicking[i]]](core);
-        wbslab->bitmasks[i] &= ~IS_CLICKED;
-    }
-
-    buffer->clicking_count = 0;
-    buffer->hovering_count = 0;
 }
 
 /*

@@ -11,7 +11,6 @@ void z_debug(ZCore* core) {
 ZCore* z_core_init() {
     ZCore* core = calloc(1, sizeof(ZCore));
     assert(core);
-
     core->used_id_count = 0;
     return core;
 }

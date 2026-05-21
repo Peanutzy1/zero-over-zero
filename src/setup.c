@@ -7,10 +7,9 @@ void b1_onclick(ZCore* core) {
 }
 
 void z_setup(ZCore* core) {
-    ZWorldButtonSlab* wbslab = core->wbslab;
     z_entity_add(core, 1);
     wbslab_add(
-        wbslab,
+        core,
         1,
         (Vector2){ 0, 0 },
         (Vector2){ 320, 200 },
