@@ -8,13 +8,13 @@
 void wbslab_init(ZCore* core) {
     core->wbslab = (ZWorldButtonSlab* )calloc(1, sizeof(ZWorldButtonSlab));
     assert(core->wbslab);
-    core->slab_lookup_table[WBSLAB] = core->wbslab;
 
     ZWorldButtonSlab* wbslab = core->wbslab;
     memset(wbslab->idx_to_id, 0xFF, sizeof(wbslab->idx_to_id));
 
     for (int i = 0; i < WBSLAB_ECOUNT; i++) {
         wbslab->onclicks[i] = &z_debug;
+        wbslab->onhovers[i] = &z_debug;
     };
 
     wbslab->entity_count = 0;
@@ -24,18 +24,20 @@ void wbslab_add(
     ZCore* core,
     ZEntityId id,
     Vector2 position, Vector2 size,
-    ZAction onclick
+    ZAction onclick,
+    ZAction onhover
 ) {
     ZWorldButtonSlab* wbslab = core->wbslab;
     assert(wbslab->entity_count < WBSLAB_ECOUNT);
     ZEntityIdx idx = wbslab->entity_count++;
     ZMetaData* metadata = &core->id_to_metadata[id];
-    metadata->idx = idx;
-    metadata->slab_id = WBSLAB;
+    metadata->local_idx = idx;
+    metadata->slab_ptr  = wbslab;
     wbslab->idx_to_id[idx] = id;
     wbslab->positions[idx] = position;
     wbslab->sizes[idx] = size;
     wbslab->onclicks[idx] = onclick;
+    wbslab->onhovers[idx] = onhover;
 }
 
 static void wbslab_render_entity(ZWorldButtonSlab* wbslab, ZEntityIdx idx) {
@@ -47,7 +49,7 @@ static void wbslab_render_entity(ZWorldButtonSlab* wbslab, ZEntityIdx idx) {
         wbslab->sizes[idx].y
     };
 
-    uint8_t sub = 64 
+    uint8_t sub = 64
     * (((wbslab->bitmasks[idx] & IS_HOVERED) != 0)
     + ((wbslab->bitmasks[idx] & IS_CLICKED) != 0));
 
@@ -55,7 +57,7 @@ static void wbslab_render_entity(ZWorldButtonSlab* wbslab, ZEntityIdx idx) {
         (uint8_t)(255 - sub),
         (uint8_t)(255 - sub),
         (uint8_t)(255 - sub),
-        255 
+        255
     };
 
     DrawRectangleRec(rect, color);

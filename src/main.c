@@ -28,8 +28,7 @@ int main(void) {
 
         z_system_hitcheck(core);
 
-        z_furry_onclick_processor(core);
-
+        z_event_loop(core);
         z_render_loop(core);
     }
     CloseWindow();

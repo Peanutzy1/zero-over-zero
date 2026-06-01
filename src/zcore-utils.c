@@ -4,11 +4,11 @@
 
 #include "zero.h"
 
-void z_debug(ZCore* core) {
-    printf("game might has a uninitialized behavior. %zu", sizeof(*core));
+void z_debug(ZCore* core, ZEvent* me) {
+    printf("%p is an uninitialized behavior. %zu", (void*)me, sizeof(*core));
 }
 
-ZCore* z_core_init() {
+ZCore* z_core_init(void) {
     ZCore* core = calloc(1, sizeof(ZCore));
     assert(core);
     core->used_id_count = 0;

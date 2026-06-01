@@ -13,6 +13,7 @@
 
 #define MAX_ENTITIES 16384
 #define MAX_SLABS 16
+#define MAX_EVENTS 1024
 #define CHUNK_WIDTH (1 << 10)
 #define CHUNK_HEIGHT (1 << 10)
 #define CHUNK_WIDTH_F 1024.0
@@ -25,15 +26,16 @@
 typedef int16_t ZEntityId;
 typedef int16_t ZEntityIdx;
 typedef int16_t ZEntityMaxAmount;
-typedef int16_t ZChunkId;
+// typedef int16_t ZChunkId;
 typedef int16_t ZSlabId;
 
 // Forward declaring the context struct so I can typedef the function pointer below.
 typedef struct ZCore ZCore;
 typedef struct ZWorldButtonSlab ZWorldButtonSlab;
+typedef struct ZEvent ZEvent;
 
 // This is a universal function pointer for behavior, so it can run via other code in the system
-typedef void (*ZAction)(ZCore* den);
+typedef void (*ZAction)(ZCore* core, ZEvent* event);
 
 /*
  * ======================= MISCELLANOUS STRUCTS DEFINITIONS
@@ -58,13 +60,9 @@ typedef struct {
  * I use it for the id_to_meta array in ZCore
  */
 
-typedef enum {
-    WBSLAB = 1,
-} Slab_ids;
-
 typedef struct {
-    ZEntityIdx idx;
-    ZSlabId slab_id;
+    void* slab_ptr;
+    int local_idx;
 } ZMetaData;
 
 /*
@@ -81,18 +79,21 @@ typedef enum {
     // flags for bitmasks array
     IS_HOVERED = 1 << 0,
     IS_CLICKED = 1 << 1,
+    DISPLAY_CLICKED = 1 << 2,
     WBSLAB_ECOUNT = 128, // entity count
     WBSLAB_CCOUNT = 128, // chunk count. depends on how much chunks the buttons in my game occupies in.
 } wbslab_globals;
 
-typedef struct {
-    ZEntityId hovering[64];
-    ZEntityId clicking[16];
-    ZChunkId visible_chunks[64];
-    int hovering_count;
-    int clicking_count;
-    int visible_chunk_count;
-} ZCommandBuffer;
+// aos because Im lazy..
+struct ZEvent {
+    ZAction action;
+    bool kill_me;
+    bool tick_timer;
+    int target_id;
+    float timer;
+    char data[64];
+    void* heap;
+};
 
 struct ZWorldButtonSlab {
     int entity_count;
@@ -104,6 +105,7 @@ struct ZWorldButtonSlab {
     Vector2 sizes[WBSLAB_ECOUNT];
     uint16_t bitmasks[WBSLAB_ECOUNT];
     ZAction onclicks[WBSLAB_ECOUNT];
+    ZAction onhovers[WBSLAB_ECOUNT];
     int level_max[WBSLAB_ECOUNT];
     int level_current[WBSLAB_ECOUNT];
 };
@@ -115,14 +117,12 @@ struct ZWorldButtonSlab {
 
 struct ZCore {
     ZEntityId id_used[MAX_ENTITIES];
-    ZEntityId used_id_count;
-    
+    int used_id_count;
+
     ZMetaData id_to_metadata[MAX_ENTITIES]; // Maps global ID to local slab index and slab pointer
-    void* slab_lookup_table[MAX_SLABS];
-    ZCommandBuffer buffer;
-
     ZWorldButtonSlab* wbslab;
-
+    ZEvent events[MAX_EVENTS];
+    int event_count;
     Camera2D camera;
     Vector2 camera_position;
     Vector2 screen_size;
@@ -139,7 +139,7 @@ struct ZCore {
  */
 
 // Default ZAction, which it's pointer is put in all behavior to prevent calling nonexistent actions
-void z_debug(ZCore* core);
+void z_debug(ZCore* core, ZEvent* me);
 
 // input / output, controls the screen size
 void z_io_init(ZCore* core);
@@ -165,10 +165,6 @@ void z_setup(ZCore* core);
 // hitcheck handler
 void z_system_hitcheck(ZCore* core);
 
-// clicking handler
-void z_furry_onclick_processor(ZCore* core);
-
-
 /**
  * ========================= ZCore-related functions
  * - These are functions that are usually related to ZCore's setup or managing entities in ZCore
@@ -176,7 +172,7 @@ void z_furry_onclick_processor(ZCore* core);
  */
 
 // Allocate and set up the used_id_count variable.
-ZCore* z_core_init();
+ZCore* z_core_init(void);
 
 // Check if entity matches, check if they are out of bounds, then put them into the id_used array
 void z_entity_add(ZCore* core, ZEntityId id);
@@ -198,11 +194,35 @@ void z_entity_add(ZCore* core, ZEntityId id);
 void wbslab_init(ZCore* core); // allocates wbslab and set up id->idx idx->id
 
 // Requires a valid ZEntityId, along with all properties, and set it onto the slab.
-void wbslab_add(ZCore* core, ZEntityId id, Vector2 position, Vector2 size, ZAction onclick);
+void wbslab_add(
+    ZCore* core,
+    ZEntityId id,
+    Vector2 position,
+    Vector2 size,
+    ZAction onclick,
+    ZAction onHover
+);
 
 // ============== LOOP FUNCTIONS
 
 void wbslab_render(ZWorldButtonSlab* wbslab); // draws locally all the buttons
+
+
+
+// ========================= ZEVENT HANDLERS
+/*
+ * A collection of functions that handles ZEvent, the main way of doing behaviors for entities.
+ *
+ * it's name is "days of insomania for this (not really)" - peanut
+ */
+
+void z_event_add_too_simple(ZCore* core, ZAction action);
+
+void z_event_add_too_complicated(ZCore* core, ZEvent event);
+
+void z_event_delete(ZCore* core, int event_idx);
+
+void z_event_loop(ZCore* core);
 
 /** DEPRECATED ZONE (sad) */
 /**

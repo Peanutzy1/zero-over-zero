@@ -35,7 +35,7 @@ void z_zoom(ZCore* core) {
 
 void z_output_loop(ZCore* core) {
     core->camera.target = core->camera_position;
-    
+
     if (!IsWindowResized()) {
         core->camera.target = core->camera_position;
         return;
@@ -45,7 +45,7 @@ void z_output_loop(ZCore* core) {
     core->screen_size.y = GetScreenHeight();
     core->camera.offset = (Vector2){
         core->screen_size.x / 2.0f,
-        core->screen_size.y / 2.0f 
+        core->screen_size.y / 2.0f
     };
 }
 

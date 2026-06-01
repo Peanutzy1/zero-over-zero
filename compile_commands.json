@@ -1,11 +1,11 @@
 [
   {
-    "file": "src/main.c",
+    "file": "src/event.c",
     "arguments": [
       "/usr/sbin/clang",
-      "src/main.c",
+      "src/event.c",
       "-o",
-      "build/zero-over-zero.exe",
+      "build/zero-over-zero",
       "-std=c23",
       "-O0",
       "-Wall",
@@ -14,7 +14,133 @@
       "-Werror",
       "-DPLATFORM_DESKTOP"
     ],
-    "directory": "/home/peanutzy/zero-over-zero",
-    "output": "build/zero-over-zero.exe"
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
+  },
+  {
+    "file": "src/io.c",
+    "arguments": [
+      "/usr/sbin/clang",
+      "src/io.c",
+      "-o",
+      "build/zero-over-zero",
+      "-std=c23",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DPLATFORM_DESKTOP"
+    ],
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
+  },
+  {
+    "file": "src/main.c",
+    "arguments": [
+      "/usr/sbin/clang",
+      "src/main.c",
+      "-o",
+      "build/zero-over-zero",
+      "-std=c23",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DPLATFORM_DESKTOP"
+    ],
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
+  },
+  {
+    "file": "src/render.c",
+    "arguments": [
+      "/usr/sbin/clang",
+      "src/render.c",
+      "-o",
+      "build/zero-over-zero",
+      "-std=c23",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DPLATFORM_DESKTOP"
+    ],
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
+  },
+  {
+    "file": "src/setup.c",
+    "arguments": [
+      "/usr/sbin/clang",
+      "src/setup.c",
+      "-o",
+      "build/zero-over-zero",
+      "-std=c23",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DPLATFORM_DESKTOP"
+    ],
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
+  },
+  {
+    "file": "src/system.c",
+    "arguments": [
+      "/usr/sbin/clang",
+      "src/system.c",
+      "-o",
+      "build/zero-over-zero",
+      "-std=c23",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DPLATFORM_DESKTOP"
+    ],
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
+  },
+  {
+    "file": "src/wbslab-fn.c",
+    "arguments": [
+      "/usr/sbin/clang",
+      "src/wbslab-fn.c",
+      "-o",
+      "build/zero-over-zero",
+      "-std=c23",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DPLATFORM_DESKTOP"
+    ],
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
+  },
+  {
+    "file": "src/zcore-utils.c",
+    "arguments": [
+      "/usr/sbin/clang",
+      "src/zcore-utils.c",
+      "-o",
+      "build/zero-over-zero",
+      "-std=c23",
+      "-O0",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-DPLATFORM_DESKTOP"
+    ],
+    "directory": "/home/peanutzy/Projects/zero",
+    "output": "build/zero-over-zero"
   }
 ]
