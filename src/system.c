@@ -16,6 +16,7 @@ void z_system_hitcheck(ZCore* core) {
 
     ZWorldButtonSlab* wbslab = core->wbslab;
     for (int i = 0; i < wbslab->entity_count; i++) {
+        if(!(wbslab->bitmasks[i] & IS_ACTIVE)) continue;
         Rectangle button = {
             wbslab->positions[i].x,
             wbslab->positions[i].y,

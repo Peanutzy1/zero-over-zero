@@ -16,4 +16,7 @@ such as:
 - yes i know i wont be making a game for an eternity until this engine is done
 
 ## TO DOS
-- actually have a clicky button on a zoomable pannable canvas
+- currency system
+- beautiful button
+- text system
+- ui / frozen buttons

@@ -15,3 +15,13 @@ i have imposed a rule: 1 entity belong in 1 slab
 
 bad idea: making an actual event system
 les go
+
+
+
+hi im peanutzy
+its june 1
+i writing this in night
+me cloc the src
+it only 372 loc.
+not 600.
+i cry

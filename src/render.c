@@ -27,7 +27,7 @@ void z_draw_ui(ZCore* core) {
 
 void z_render_loop(ZCore* core) {
     BeginDrawing();
-    ClearBackground(GetColor(0x000000ff));
+    ClearBackground(GetColor(0x404040ff));
 
     BeginMode2D(core->camera);
     wbslab_render(core->wbslab);

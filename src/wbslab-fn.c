@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <raylib.h>
 #include <stdlib.h>
 #include <string.h>
 // #include <stdio.h>
@@ -23,25 +24,31 @@ void wbslab_init(ZCore* core) {
 void wbslab_add(
     ZCore* core,
     ZEntityId id,
-    Vector2 position, Vector2 size,
+    Vector2 position,
+    Vector2 size,
+    int max_level,
     ZAction onclick,
     ZAction onhover
 ) {
     ZWorldButtonSlab* wbslab = core->wbslab;
     assert(wbslab->entity_count < WBSLAB_ECOUNT);
     ZEntityIdx idx = wbslab->entity_count++;
-    ZMetaData* metadata = &core->id_to_metadata[id];
-    metadata->local_idx = idx;
-    metadata->slab_ptr  = wbslab;
+    core->id_to_idx[id] = idx;
     wbslab->idx_to_id[idx] = id;
     wbslab->positions[idx] = position;
     wbslab->sizes[idx] = size;
+    wbslab->level_max[idx] = max_level;
     wbslab->onclicks[idx] = onclick;
     wbslab->onhovers[idx] = onhover;
 }
 
 static void wbslab_render_entity(ZWorldButtonSlab* wbslab, ZEntityIdx idx) {
-
+    bool is_active = wbslab->bitmasks[idx] & IS_ACTIVE;
+    if (!is_active) return;
+    
+    bool is_clicked = wbslab->bitmasks[idx] & IS_CLICKED;
+    bool is_hovered = wbslab->bitmasks[idx] & IS_HOVERED;
+    
     Rectangle rect = {
         wbslab->positions[idx].x,
         wbslab->positions[idx].y,
@@ -49,9 +56,7 @@ static void wbslab_render_entity(ZWorldButtonSlab* wbslab, ZEntityIdx idx) {
         wbslab->sizes[idx].y
     };
 
-    uint8_t sub = 64
-    * (((wbslab->bitmasks[idx] & IS_HOVERED) != 0)
-    + ((wbslab->bitmasks[idx] & IS_CLICKED) != 0));
+    uint8_t sub = 64 * (is_clicked != 0);
 
     Color color = {
         (uint8_t)(255 - sub),
@@ -60,6 +65,14 @@ static void wbslab_render_entity(ZWorldButtonSlab* wbslab, ZEntityIdx idx) {
         255
     };
 
+    Rectangle hover_ring = {rect.x - 1, rect.y - 1, rect.width + 2, rect.height + 2};
+    Color hover_color = {
+        255,
+        255,
+        255,
+        255 * (is_hovered != 0)
+    };
+    DrawRectangleRec(hover_ring, hover_color);
     DrawRectangleRec(rect, color);
 }
 

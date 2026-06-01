@@ -79,7 +79,7 @@ typedef enum {
     // flags for bitmasks array
     IS_HOVERED = 1 << 0,
     IS_CLICKED = 1 << 1,
-    DISPLAY_CLICKED = 1 << 2,
+    IS_ACTIVE = 1 << 2,
     WBSLAB_ECOUNT = 128, // entity count
     WBSLAB_CCOUNT = 128, // chunk count. depends on how much chunks the buttons in my game occupies in.
 } wbslab_globals;
@@ -119,7 +119,7 @@ struct ZCore {
     ZEntityId id_used[MAX_ENTITIES];
     int used_id_count;
 
-    ZMetaData id_to_metadata[MAX_ENTITIES]; // Maps global ID to local slab index and slab pointer
+    ZEntityIdx id_to_idx[MAX_ENTITIES]; // Maps global ID to local slab index
     ZWorldButtonSlab* wbslab;
     ZEvent events[MAX_EVENTS];
     int event_count;
@@ -199,6 +199,7 @@ void wbslab_add(
     ZEntityId id,
     Vector2 position,
     Vector2 size,
+    int max_level,
     ZAction onclick,
     ZAction onHover
 );

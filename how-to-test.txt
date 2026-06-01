@@ -1,0 +1,2 @@
+testing is very simple: kinda... just... open up the game and see the behaviors
+sorry i don't have a test suite.
